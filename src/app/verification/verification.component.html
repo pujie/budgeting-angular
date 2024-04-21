@@ -1,0 +1,46 @@
+<mat-list>
+  <mat-list-item>{{obj.subject}}</mat-list-item>
+  <mat-list-item><mat-label>Staff name:</mat-label><span  class="example-fill-remaining-space"></span>
+    <span align="end">{{obj.staff_name}}</span>
+  </mat-list-item>
+  <mat-divider></mat-divider>
+  <mat-list-item>
+    <mat-label>Submission date:</mat-label>
+    <span  class="example-fill-remaining-space"></span>
+    <span align="end">{{obj.submission_date}}</span>
+  </mat-list-item>
+  <mat-divider></mat-divider>
+  <mat-list-item>
+    <mat-label>Total Price:</mat-label>
+    <span  class="example-fill-remaining-space"></span>
+    <span align="end">{{obj.totalprice | currency:'IDR':'symbol-narrow'}}</span>
+  </mat-list-item>
+  <mat-divider></mat-divider>
+  <mat-list-item>
+    <mat-label>Item name:</mat-label>
+    <span  class="example-fill-remaining-space"></span>
+    <span align="end">{{obj.itemname}}</span>
+  </mat-list-item>
+  <mat-divider></mat-divider>
+  <mat-list-item>
+    <mat-label>implementation target:</mat-label>
+    <span  class="example-fill-remaining-space"></span>
+    <span align="end">{{obj.implementation_target}}</span>
+  </mat-list-item>
+  <mat-divider></mat-divider>
+  <mat-list-item>
+    <mat-label>Purchase Target:</mat-label>
+    <span  class="example-fill-remaining-space"></span>
+    <span align="end">{{obj.purchase_target}}</span>
+  </mat-list-item>
+  <mat-divider></mat-divider>
+  <mat-list-item>
+    <mat-label>Purchase Reason:</mat-label>
+    <span  class="example-fill-remaining-space"></span>
+    <span align="end">{{obj.purchase_reason}}</span>
+  </mat-list-item>
+</mat-list>
+<img id="scanPOImage" alt="">
+<br>
+<button mat-raised-button color="danger" (click)="showRejectDescriptionDialog(9)">Verify</button>
+<button mat-raised-button color="warn" (click)="showRejectDescriptionDialog(3)">Reject</button>

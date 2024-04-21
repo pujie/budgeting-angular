@@ -1,0 +1,46 @@
+<mat-toolbar>
+    <h1 class="mat-display-1">Add Plafon</h1>
+    <span class="spacefiller"></span>
+    <button mat-button color="primary" (click)="backToBudgets()">Cancel</button>
+    <button mat-button color="primary" (click)="budgetAdd()">Save Plafon</button>
+</mat-toolbar>
+    <mat-form-field class="example-full-width">
+      <mat-label>Division</mat-label>
+      <mat-select [(ngModel)]="budget.division">
+        <mat-option *ngFor="let division of divisions" [value]="division.id">
+          {{division.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>Quarter</mat-label>
+      <mat-select [(ngModel)]="budget.quarter">
+        <mat-option *ngFor="let quarter of quarters" [value]="quarter.value">
+          {{quarter.viewValue}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Tahun</mat-label>
+      <mat-select [(ngModel)]="budget.year">
+        <mat-option *ngFor="let year of years" [value]="year.value">
+          {{year.viewValue}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>City</mat-label>
+      <mat-select [(ngModel)]="budget.city_id">
+        <mat-option *ngFor="let city of cities" [value]="city.id">
+          {{city.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  <mat-form-field class="example-full-width">
+    <mat-label>Penambahan Plafon</mat-label>
+    <input matInput currencyMask placeholder="Plafon" value="0" [options]="{ prefix: 'Rp ', thousands: '.', precision: '0'}" [(ngModel)]="budget.amount">
+  </mat-form-field>
+  <mat-form-field class="example-full-width">
+    <mat-label>Keterangan</mat-label>
+    <input matInput placeholder="Keterangan" [(ngModel)]="budget.description">
+  </mat-form-field>

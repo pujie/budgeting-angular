@@ -1,0 +1,31 @@
+<mat-grid-list cols="2" rowHeight="2:1">
+  <mat-grid-tile>
+    <mat-list>
+      <mat-list-item>Subject :<b>{{submission.subject}}</b></mat-list-item>
+      <mat-divider></mat-divider>
+      <mat-list-item>Submission date :<b>{{submission.submission_date}}</b></mat-list-item>
+      <mat-divider></mat-divider>
+      <mat-list-item>Implementation target :<b>{{submission.implementation_target}}</b></mat-list-item>
+    </mat-list>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <mat-list>
+      <mat-list-item>Purchase target :<b>{{submission.purchase_target}}</b></mat-list-item>
+      <mat-divider></mat-divider>
+      <mat-list-item>Total Price :<b>{{submission.totalprice| currency:'IDR':'symbol-narrow'}}</b></mat-list-item>
+      <mat-divider></mat-divider>
+      <mat-list-item>Staff Name :<b>{{submission.staff_name|titlecase}}</b></mat-list-item>
+    </mat-list>
+  </mat-grid-tile>
+</mat-grid-list>
+
+<label for="">{{differ}} ({{differPercentage}} )</label>
+<div class="example-container">
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="Final Price (after nego)"class="example-right-align" [(ngModel)]="submission.final_price" (keyup)="checkDiffer()">
+      <span matPrefix>Rp&nbsp;</span>
+    </mat-form-field>
+    
+    <button mat-raised-button [disabled]="morethan50percent" (click)="updatePrice()">Save Final Price</button>
+    <button mat-raised-button [disabled]="!morethan50percent" (click)="rejectSubmission()">Reject Submission</button>
+</div>

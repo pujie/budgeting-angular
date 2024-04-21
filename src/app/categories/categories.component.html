@@ -1,0 +1,54 @@
+<div class="title">
+	<h1>Categories List</h1>
+</div>
+<mat-form-field>
+	<input type="text" matInput (keyup)="searchCat($event.target.value)"  [(ngModel)]="searchdata" (keydown)="searchKeyDown($event,searchdata)" placeholder="Search">
+</mat-form-field>
+<mat-icon svgIcon="search" mat-button  (click)="doSearch(searchdata)" class="cpointer"></mat-icon>
+<div>
+	<!-- Tabel list of categories -->
+	<table mat-table table [dataSource]="listOfCategories" class="mat-elevation-z8">
+		<!-- No Column -->
+		<ng-container matColumnDef="no">
+	    	<th mat-header-cell *matHeaderCellDef> No. </th>
+	    	<td mat-cell *matCellDef="let category; let i = index"> {{ i+1 }} </td>
+	  	</ng-container>
+
+	  	<!--id Coumn -->
+		<ng-container matColumnDef="id" hidden="hidden">
+	    	<th mat-header-cell *matHeaderCellDef hidden="hidden"> id. </th>
+	    	<td mat-cell *matCellDef="let category" hidden="hidden"> {{category.id}} </td>
+	  	</ng-container>
+
+		  <!-- Nama Kategori Column -->
+		  <ng-container matColumnDef="name">
+		    <th mat-header-cell  *matHeaderCellDef> Category </th>
+		    <td mat-cell *matCellDef="let category"> {{category.name}} </td>
+		  </ng-container>
+
+		  <!-- Desc Column -->
+		  <ng-container matColumnDef="description">
+		    <th mat-header-cell  *matHeaderCellDef> Description </th>
+		    <td mat-cell *matCellDef="let category"> {{category.description}} </td>
+		  </ng-container>
+
+		  <!-- Actions Column -->
+		  <ng-container matColumnDef="action">
+		    <th mat-header-cell *matHeaderCellDef> Action </th>
+		    <td mat-cell *matCellDef="let category">
+		    	<mat-select placeholder="Select an action">
+		    		<mat-option [value]="detail" routerLink="/category-detail/{{ category.id }}">View Details</mat-option>
+					<mat-divider></mat-divider>
+		    		<!-- <mat-option (click)="openDialog(category.id)">Delete</mat-option> -->
+		    	</mat-select>
+		    </td>
+		  </ng-container>
+
+		  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+		  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+			<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+	</table>
+	<mat-paginator  [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" (page) = "changePage($event)" >
+	</mat-paginator>
+</div>

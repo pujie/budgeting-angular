@@ -1,0 +1,54 @@
+<div class='title'>
+	<h1>Add New Vendor</h1>
+</div>
+<div class='dialog'>
+	<div id='left-dialog'>
+		<h3>Existing Vendor</h3>
+		<mat-form-field>
+				<mat-select class="full-width" [(ngModel)]="existingUnassociatedVendor">
+		  		<mat-option *ngFor="let addVendor of nonAssociatedVendors" [value]='addVendor' (click)='checkNewVendor(addVendor.id)'>{{addVendor.name}}</mat-option>
+			 	</mat-select>
+		</mat-form-field>
+
+		<button mat-stroked-button class='kiri' (click)="addVendorToProduct()" [disabled]="vendorIsNotValid()">Add Vendor to Product</button>
+	</div>
+</div>
+<div class='dialog'>
+	<!-- Input nama vendor -->
+	<div class="container">
+		<mat-form-field>
+		<input type="text" matInput [(ngModel)]="vend.name" name="name" id = "name"
+		class="full-width" placeholder="Name" required >
+		</mat-form-field>
+	</div>
+	
+	<!-- Input alamat vendor -->
+	<div  class="container">
+		<mat-form-field>
+		<input type="text" matInput [(ngModel)]="vend.address" id="alamat"
+		class="full-width" placeholder="Address" required >	
+		</mat-form-field>
+	</div>	
+
+	<!-- Input nomor telepon vendor -->
+	<div  class="container">
+		<mat-form-field>
+		<input type="text" matInput [(ngModel)]="vend.phone" id="telp" (keypress)="numCheck($event)"
+		class="full-width" placeholder="Phone Number" required  maxlength='20' >
+		</mat-form-field>
+	</div>
+
+
+	<!-- Input akun bank vendor -->
+	<div  class="container">
+		<mat-form-field>
+		<input type="text" matInput [(ngModel)]="vend.bankaccount" id="bank"
+		class="full-width" placeholder="Bank Account" required>
+		</mat-form-field>
+	</div>
+
+	<!-- Action Buttons -->
+	<button mat-stroked-button class='kiri' (click)="onSaveClick(vend)" [disabled]="entryIsNotValid()">Save</button>
+	<button mat-stroked-button color="warn" (click)="onClearClick()">Clear</button>
+	<button mat-stroked-button class="kanan" color='warn' (click)='onCancelClick()'>Cancel</button>
+</div>

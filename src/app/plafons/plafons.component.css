@@ -1,0 +1,14 @@
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+}
+.kiri{
+	margin-right: 5px;
+}
+.filter{
+	margin-bottom: 15px
+}
+#newPlafons{
+	margin-top: 15px;
+	float: right;
+}

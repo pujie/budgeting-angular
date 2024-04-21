@@ -1,0 +1,13 @@
+<p>
+  Member of {{role|uppercase}}
+</p>
+<mat-list role="list">
+  <mat-list-item *ngFor="let user of users">
+    {{user.username}}
+    <span class="example-spacer"></span>
+    {{user.name}}
+    <mat-icon class="example-icon" aria-hidden="false" aria-label="Example delete icon">delete</mat-icon>
+  </mat-list-item>
+  
+
+</mat-list>

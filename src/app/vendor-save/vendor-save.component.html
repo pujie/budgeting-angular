@@ -1,0 +1,66 @@
+<div class="title">
+	<h1>Add New Vendor</h1>
+</div>
+
+	<!-- <img src="assets/no-image.jpg" alt="" id="namecard">
+	<div class="container">
+		<input type="file" name="namecard"
+		class="full-width" (change)="namecard($event)" >
+	</div>
+
+	<img src="assets/no-image.jpg" alt="" id="offeringsample">
+	<div class="container">
+		<input type="file" name="offeringsample"
+		class="full-width" (change)="offeringsample($event)" >
+	</div>
+
+	<img src="assets/no-image.jpg" alt="" id="invoicesample">
+	<div class="container">
+		<input type="file" name="invoicesample"
+		class="full-width" (change)="invoicesample($event)" >
+	</div>
+
+	<img src="assets/no-image.jpg" alt="" id="receiptsample">
+	<div class="container">
+		<input type="file" name="receiptsample"
+		class="full-width" (change)="receiptsample($event)" >
+	</div> -->
+
+<!-- Form -->
+	<!-- Input nama vendor -->
+	<div class="container">
+		<mat-form-field>
+		<input type="text" matInput [(ngModel)]="vendor.name" name="name" id = "name"
+		class="full-width" placeholder="Name" #name="ngModel" required (keyup)="changeFocus($event, alamat)">
+		</mat-form-field>
+	</div>
+	
+	<!-- Input alamat vendor -->
+	<div  class="container">
+		<mat-form-field>
+		<input type="text" matInput [(ngModel)]="vendor.address" id="alamat"
+		class="full-width" placeholder="Address" required #address="ngModel" #alamat (keyup)="changeFocus($event, telp)">	
+		</mat-form-field>
+	</div>	
+
+	<!-- Input nomor telepon vendor -->
+	<div  class="container">
+		<mat-form-field>
+		<input type="text" matInput [(ngModel)]="vendor.phone" id="telp" (keypress)="numCheck($event)"
+		class="full-width" placeholder="Phone Number" required #phone="ngModel" maxlength='20' #telp (keyup)="changeFocus($event, bank)">
+		</mat-form-field>
+	</div>
+
+
+	<!-- Input akun bank vendor -->
+	<div  class="container">
+		<mat-form-field>
+		<input type="text" matInput [(ngModel)]="vendor.bankaccount" id="bank" (keyup)="bankNull(vendor.bankaccount)"
+		class="full-width" placeholder="Bank Account" required #bankaccount="ngModel" #bank>
+		</mat-form-field>
+	</div>
+
+	<!-- Action Buttons -->
+	<button mat-stroked-button class='kiri' (click)="saveVendor(vendor)">Save</button>
+	<button mat-stroked-button color="warn" (click)="clearInput()">Clear</button>
+	<button mat-stroked-button class= 'kanan'routerLink="/vendor">Back to list</button>

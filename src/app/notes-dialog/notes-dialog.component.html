@@ -1,0 +1,13 @@
+<mat-list role="list">
+  <mat-list-item role="listitem" *ngFor="let note of notes">
+    <h3 matLine>{{note.description}}</h3>
+    <p matLine>
+      <span>{{note.state}}</span>
+    </p>
+    <p matLine>
+        <span>{{note.createuser}} {{note.createdate}}</span>
+      </p>
+    </mat-list-item>
+</mat-list>
+<button mat-button (click)="closeDialog()">Close</button>
+<button mat-button (click)="addNote()">Add Note</button>

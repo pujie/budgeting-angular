@@ -1,0 +1,31 @@
+.body{
+	font-family: "calibri";
+}
+
+.ataskiri, .ataskanan{
+	width: 48%;
+	display: inline-block;
+	padding: 1%;
+}
+
+.full-width{
+	width: 100%;
+}
+
+#rightbutton{
+	float: right;
+}
+
+.kiri{
+	margin-right: 5px;
+}
+.kanan{
+	margin-left: 5px;
+}
+
+.image{
+	width: 20%;
+	display: inline-block;
+	vertical-align: top;
+	margin: 1%
+}

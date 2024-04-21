@@ -1,0 +1,65 @@
+.staff{
+	font-size: 1vw;
+	margin: auto;
+	text-align: left;
+	width: 25%;
+	font-family: "calibri";
+}
+
+.btnAtas{
+	margin-left: 15px;
+	margin-top: 10px;
+}
+
+.back{
+	margin-left: 65px;
+}
+
+.item{
+	padding: 1% 1% 2% 1%;
+	font-family: "calibri";
+	font-size: 1.1vw;
+}
+
+.kiri{
+	width: 25%;
+	display: inline-block;
+}
+
+.kanan{
+	vertical-align: top;
+	margin-left: 5%;
+	width: 65%;
+	display: inline-block;
+}
+
+.atas th{
+	text-align: left;
+	padding: 1% 2%;
+	background-color: #fdb913;
+    border: 1px solid #fdb913;
+	width: 40%;
+}
+
+.bawah{
+	width: 100%;
+	text-align: center;
+}
+
+.bawah th{
+	background-color: #fdb913;
+    border: 1px solid #fdb913;
+}
+
+.delete{
+	float: left;
+}
+
+.btnBawah{
+	float: right;
+}
+
+.edit{
+	display: inline-block;
+	font-size: 0.75vw;
+}

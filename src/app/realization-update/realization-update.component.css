@@ -1,0 +1,35 @@
+.atas{
+	font-size: 20px;
+	text-align: left;
+	padding: 0 25%;
+	font-family: "calibri";
+}
+
+.kiri, .kanan{
+	display: inline-block;
+	width: 45%;
+	vertical-align: middle;
+}
+
+.kanan{
+	margin-left: 9%;
+}
+
+th{
+	background-color: #fdb913;
+	padding: 1% 2%;
+}
+
+.bawah{
+	padding: 1%;
+}
+
+.form{
+	width: 47.5%;
+	display: inline-block;
+	vertical-align: top;
+}
+
+.button{
+	float: right;
+}

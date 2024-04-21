@@ -1,0 +1,34 @@
+<div class='title'>
+	<h1>Add New Category</h1>
+</div>
+
+<!-- Form -->
+	<!-- nama kategori -->
+	<div class="container">
+		<mat-form-field>
+		<input type="text" matInput [(ngModel)]="obj.name" name="name" id = "name"
+		class="full-width" placeholder="Name" #name="ngModel" required>
+		</mat-form-field>
+	</div>
+
+	<!-- deskripsi kategori -->
+	<div class="container">
+		<mat-form-field>
+		<textarea  matInput [(ngModel)]="obj.description" name="description" id = "description"
+		class="full-width" placeholder="Description" #description="ngModel" required>
+		</textarea>
+		</mat-form-field>
+	</div>
+
+	<!-- Action Button -->
+	<button mat-stroked-button class='kiri' (click)="saveCategory(obj)">Save</button>
+	<button mat-stroked-button color="warn" (click)="clearInput()">Clear</button>
+	<button mat-stroked-button class='kanan' routerLink="/categories">Back to list</button>
+
+	<!-- Pembuat kategori -->
+	<div class="container" id="hide">
+		<mat-form-field>
+		<input type="text" matInput [(ngModel)]="obj.createuser" name="createuser" id = "createuser"
+		class="full-width" placeholder="Pembuat Kategori" #createuser="ngModel" required>
+		</mat-form-field>
+	</div>

@@ -1,0 +1,282 @@
+<div class='title'>
+	<h1>{{vendor.name}}</h1>
+	<h5>Vendor Detail</h5>
+</div>
+<div class='body'>
+	<div class='atas'>
+		<div class='ataskiri'>
+			<!-- Input nama vendor -->
+			<div class="container">
+				<mat-form-field>
+				<input type="text" matInput [(ngModel)]="vendor.name" name="name"
+				class="full-width" placeholder="Name" disabled>
+				</mat-form-field>
+			</div>
+			<!-- Input alamat vendor -->
+			<div  class="container">
+				<mat-form-field>
+				<input type="text" matInput [(ngModel)]="vendor.address" id="address"
+				class="full-width" placeholder="Address" disabled>	
+				</mat-form-field>
+			</div>	
+		</div>
+		<div class='ataskanan'>
+			<!-- Input nomor telepon vendor -->
+			<div  class="container">
+				<mat-form-field>
+				<input type="number" matInput [(ngModel)]="vendor.phone" id="phone" maxlength='20'
+				class="full-width" placeholder="Phone Number" disabled>
+				</mat-form-field>
+			</div>
+			<!-- Input akun bank vendor -->
+			<div  class="container">
+				<mat-form-field>
+				<input type="number" matInput [(ngModel)]="vendor.bankaccount" id="bankaccount" maxlength='20'
+				class="full-width" placeholder="Bank Account" disabled>
+				</mat-form-field>
+			</div>
+		</div>
+		<div>
+			<div [hidden]="authorized">
+				<button mat-stroked-button class='kiri' routerLink='/updatevendor/{{ vendor.id }}'>Edit</button>
+				<button mat-stroked-button color='warn' (click)="openDialog(vendor.id, 1, 0)">Delete</button>
+				<button mat-stroked-button class='kanan' routerLink='/vendor'>Back</button>
+			</div>
+			<div [hidden]='!authorized'>
+				<button mat-stroked-button routerLink='/vendor'>Back</button>
+			</div>
+		</div>
+	</div>
+	<div class="image">
+		<h3>Name Card</h3>
+		<mat-card class="profile-card" (click)="changeImage('namecard')">
+		  <img mat-card-image src="assets/no-image.jpg" alt="" id="namecard">
+		</mat-card>
+	</div>
+	<div class="image">
+		<h3>Offering Sample</h3>
+		<mat-card class="profile-card" (click)="changeImage('offeringsample')">
+		  <img mat-card-image src="assets/no-image.jpg" alt="" id="offeringsample">
+		</mat-card>
+	</div>
+	<div class="image">
+		<h3>Invoice Sample</h3>
+		<mat-card class="profile-card" (click)="changeImage('invoicesample')">
+		  <img mat-card-image src="assets/no-image.jpg" alt="" id="invoicesample">
+		</mat-card>
+	</div>
+	<div class="image">
+		<h3>Receipt Sample</h3>
+		<mat-card class="profile-card" (click)="changeImage('receiptsample')">
+		  <img mat-card-image src="assets/no-image.jpg" alt="" id="receiptsample">
+		</mat-card>
+	</div>
+	<hr>
+	<div class='tengah'>
+		<!-- tabel pic -->
+		<div>
+			<h3>Vendor's PICs</h3>
+			<div>
+				<button mat-stroked-button  (click)="openDialog(vendor.id, 2, 0)">Add PIC</button>
+			</div>
+			<div>
+				<table mat-table [dataSource]=listOfPics class="productTable mat-elevation-z8">
+				  	<ng-container matColumnDef="no">
+				      <th mat-header-cell *matHeaderCellDef> No. </th>
+				      <td mat-cell *matCellDef="let pic; let i = index"> {{ i+1 }} </td>
+				 	</ng-container>
+
+				  	<ng-container matColumnDef="name">
+				    	<th mat-header-cell *matHeaderCellDef>PIC Name </th>
+				    	<td mat-cell *matCellDef="let pic"> {{pic.name}} </td>
+				  	</ng-container>
+
+				  	<ng-container matColumnDef="role">
+				  		<th mat-header-cell *matHeaderCellDef>PIC Position </th>
+				  		<td mat-cell *matCellDef="let pic"> {{pic.role}} </td>
+					</ng-container>
+
+					<ng-container matColumnDef="phone">
+				  		<th mat-header-cell *matHeaderCellDef>PIC Phone </th>
+				  		<td mat-cell *matCellDef="let pic"> {{pic.phone}} </td>
+					</ng-container>
+
+					<ng-container matColumnDef="email">
+				  		<th mat-header-cell *matHeaderCellDef>PIC Email </th>
+				  		<td mat-cell *matCellDef="let pic"> {{pic.email}} </td>
+					</ng-container>
+
+					<!-- Actions Column -->
+					<ng-container matColumnDef="action">
+					    <th mat-header-cell *matHeaderCellDef> Action </th>
+					    <td mat-cell *matCellDef="let pic">
+					    	<mat-select placeholder="Select an action">
+					    		<mat-option [value]="Edit" (click)="openDialog(vendor.id, 3, pic.id)">Edit</mat-option>
+					    		<mat-option [value]="Delete" (click)="openDialog(vendor.id, 4, pic.id)">Delete</mat-option>
+					    	</mat-select>
+					    </td>
+					 </ng-container>
+
+					<tr mat-header-row *matHeaderRowDef="columnsToDisplayPic"></tr>
+					<tr mat-row *matRowDef="let row; columns: columnsToDisplayPic"></tr>
+				  <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator> -->
+				</table>
+				<!-- <mat-paginator  [length]="lengthBTS" [pageSize]="pageSizeBTS" [pageSizeOptions]="pageSizeOptions" (page) = "changePage($event, 1)" ></mat-paginator> -->
+			</div>
+		</div>
+
+		<!-- tabel product -->
+		<!-- Product Teknis BTS -->
+		<div>
+			<h3>Teknis BTS <button mat-stroked-button (click)='associateProduct(10)'>Associate Product</button></h3>
+			<!-- table -->
+			<div>
+				<table mat-table [dataSource]=BTSdataSource class="productTable mat-elevation-z8">
+				  	<ng-container matColumnDef="no">
+				      <th mat-header-cell *matHeaderCellDef> No. </th>
+				      <td mat-cell *matCellDef="let bts; let i = index"> {{ i+1 }} </td>
+				 	</ng-container>
+				  	<ng-container matColumnDef="name">
+				    	<th mat-header-cell *matHeaderCellDef> Name </th>
+				    	<td mat-cell *matCellDef="let bts"> {{bts.name}} </td>
+				  	</ng-container>
+				  	<ng-container matColumnDef="partNumber">
+				  		<th mat-header-cell *matHeaderCellDef> Part Number </th>
+				  		<td mat-cell *matCellDef="let bts"> {{bts.partnumber}} </td>
+					</ng-container>
+					<ng-container matColumnDef="unit">
+				  		<th mat-header-cell *matHeaderCellDef> Unit </th>
+				  		<td mat-cell *matCellDef="let bts"> {{bts.unit}} </td>
+					</ng-container>
+					<ng-container matColumnDef="price">
+						<th mat-header-cell *matHeaderCellDef> Price </th>
+						<td mat-cell *matCellDef="let bts"> {{bts.price | currency:'IDR':'symbol-narrow'}} </td>
+				  </ng-container>
+					<tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+					<tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
+				  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+				</table>
+				<mat-paginator  [length]="lengthBTS" [pageSize]="pageSizeBTS" [pageSizeOptions]="pageSizeOptions" (page) = "changePage($event, 1)" ></mat-paginator>
+			</div>
+		</div>
+
+		<!-- Product Teknis Office -->
+		<div>
+			<h3>Teknis Office <button mat-stroked-button (click)='associateProduct(11)'>Associate Product</button></h3>
+			<!-- table -->
+			<div>
+				<table mat-table [dataSource]=OfficedataSource class="productTable mat-elevation-z8">
+				  	<ng-container matColumnDef="no">
+				      <th mat-header-cell *matHeaderCellDef> No. </th>
+				      <td mat-cell *matCellDef="let office; let i = index"> {{ i+1 }} </td>
+				 	</ng-container>
+
+				  	<ng-container matColumnDef="name">
+				    	<th mat-header-cell *matHeaderCellDef> Name </th>
+				    	<td mat-cell *matCellDef="let office"> {{office.name}} </td>
+				  	</ng-container>
+
+				  	<ng-container matColumnDef="partNumber">
+				  		<th mat-header-cell *matHeaderCellDef> Part Number </th>
+				  		<td mat-cell *matCellDef="let office"> {{office.partnumber}} </td>
+					</ng-container>
+
+					<ng-container matColumnDef="unit">
+				  		<th mat-header-cell *matHeaderCellDef> Unit </th>
+				  		<td mat-cell *matCellDef="let office"> {{office.unit}} </td>
+					</ng-container>
+					<ng-container matColumnDef="price">
+						<th mat-header-cell *matHeaderCellDef> Price </th>
+						<td mat-cell *matCellDef="let office"> {{office.price | currency:'IDR':'symbol-narrow'}} </td>
+				  </ng-container>
+					<tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+					<tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
+				  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+				</table>
+				<mat-paginator  [length]="lengthOffice" [pageSize]="pageSizeOffice" [pageSizeOptions]="pageSizeOptions" (page) = "changePage($event, 2)" ></mat-paginator>
+			</div>
+		</div>
+
+		<!-- Product Non-teknis -->
+		<div>
+			<h3>Non-Teknis <button mat-stroked-button (click)='associateProduct(12)'>Associate Product</button></h3>
+			<!-- table -->
+			<div>
+				<table mat-table [dataSource]=NonteknisdataSource class="productTable mat-elevation-z8">
+				  	<ng-container matColumnDef="no">
+				      <th mat-header-cell *matHeaderCellDef> No. </th>
+				      <td mat-cell *matCellDef="let nonteknis; let i = index"> {{ i+1 }} </td>
+				 	</ng-container>
+
+				  	<ng-container matColumnDef="name">
+				    	<th mat-header-cell *matHeaderCellDef> Name </th>
+				    	<td mat-cell *matCellDef="let nonteknis"> {{nonteknis.name}} </td>
+				  	</ng-container>
+
+				  	<ng-container matColumnDef="partNumber">
+				  		<th mat-header-cell *matHeaderCellDef> Part Number </th>
+				  		<td mat-cell *matCellDef="let nonteknis"> {{nonteknis.partnumber}} </td>
+					</ng-container>
+
+					<ng-container matColumnDef="unit">
+				  		<th mat-header-cell *matHeaderCellDef> Unit </th>
+				  		<td mat-cell *matCellDef="let nonteknis"> {{nonteknis.unit}} </td>
+					</ng-container>
+					<ng-container matColumnDef="price">
+						<th mat-header-cell *matHeaderCellDef> Price </th>
+						<td mat-cell *matCellDef="let office"> {{nonteknis.price | currency:'IDR':'symbol-narrow'}} </td>
+				  </ng-container>
+
+					<tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+					<tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
+				  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+				</table>
+				<mat-paginator  [length]="lengthNonteknis" [pageSize]="pageSizeNonteknis" [pageSizeOptions]="pageSizeOptions" (page) = "changePage($event, 3)" ></mat-paginator>
+			</div>
+		</div>
+
+		<!-- Kendaraan -->
+		<div>
+			<h3>Kendaraan <button mat-stroked-button (click)='associateProduct(13)'>Associate Product</button></h3>
+			<!-- table -->
+			<div>
+				<table mat-table [dataSource]=KendaraandataSource class="productTable mat-elevation-z8">
+				  	<ng-container matColumnDef="no">
+				      <th mat-header-cell *matHeaderCellDef> No. </th>
+				      <td mat-cell *matCellDef="let kendaraan; let i = index"> {{ i+1 }} </td>
+				 	</ng-container>
+
+				  	<ng-container matColumnDef="name">
+				    	<th mat-header-cell *matHeaderCellDef> Name </th>
+				    	<td mat-cell *matCellDef="let kendaraan"> {{kendaraan.name}} </td>
+				  	</ng-container>
+
+				  	<ng-container matColumnDef="partNumber">
+				  		<th mat-header-cell *matHeaderCellDef> Part Number </th>
+				  		<td mat-cell *matCellDef="let kendaraan"> {{kendaraan.partnumber}} </td>
+					</ng-container>
+
+					<ng-container matColumnDef="unit">
+				  		<th mat-header-cell *matHeaderCellDef> Unit </th>
+				  		<td mat-cell *matCellDef="let kendaraan"> {{kendaraan.unit}} </td>
+					</ng-container>
+					<ng-container matColumnDef="price">
+						<th mat-header-cell *matHeaderCellDef> Price </th>
+						<td mat-cell *matCellDef="let office"> {{kendaraan.price | currency:'IDR':'symbol-narrow'}} </td>
+				  </ng-container>
+
+					<tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+					<tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
+				  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+				</table>
+				<mat-paginator  [length]="lengthKendaraan" [pageSize]="pageSizeKendaraan" [pageSizeOptions]="pageSizeOptions" (page) = "changePage($event, 4)" ></mat-paginator>
+			</div>
+		</div>	
+	</div>
+
+	<div class='bawah'>
+		<!-- images -->
+		<!-- Namecard -->
+		
+	</div>
+</div>

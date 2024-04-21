@@ -1,0 +1,118 @@
+<div class='title'>
+	<h1>{{obj.name}}</h1>
+	<h5>Product Detail</h5>
+</div>
+<div class='body'>
+	<div class='atas'>
+		<div class='ataskiri'>
+			<div class='container'>
+				<mat-form-field class="full-width">
+				<input type="text" matInput [(ngModel)]="obj.category_name" placeholder="Category" [ngModelOptions]="{standalone:true}" disabled>
+				</mat-form-field>
+			</div>
+			<div class='container'>
+				<mat-form-field class="full-width">
+				<input type="text" matInput [(ngModel)]="obj.name" placeholder="Product Name" [ngModelOptions]="{standalone:true}" disabled>
+				</mat-form-field>
+			</div>
+		</div>
+		<div class='ataskanan'>
+			<div class='container'>
+				<mat-form-field class="full-width">
+				<input type="text" matInput [(ngModel)]="obj.partnumber" placeholder="Part Number" [ngModelOptions]="{standalone:true}" disabled>
+				</mat-form-field>
+			</div>
+			<div class='container'>
+				<mat-form-field class="full-width">
+				<input type="text" matInput [(ngModel)]="obj.unit" placeholder="Unit" [ngModelOptions]="{standalone:true}" disabled>
+				</mat-form-field>
+			</div>
+		</div>
+	<div>
+		<button mat-stroked-button class='kiri' routerLink="/product-update/{{ obj.id }}">Edit</button>
+		<button mat-stroked-button color="warn" (click)="openDialog(obj.id, 0, 1)">Delete</button>
+		<button mat-stroked-button class='kanan' routerLink="/product">Back</button>
+		<button mat-stroked-button class='kanan' (click)="showAddVendorDialog(obj.id)">Associate Vendor</button>
+	</div>
+	</div>
+	<!-- table vendor -->
+	<div class='tengah'>
+		<h3>Associated Vendors</h3>
+		<div>
+			<!-- Tabel list of vendor -->
+			<table mat-table table [dataSource]="dataSource" class="mat-elevation-z8">
+				<!-- No Column -->
+				<ng-container matColumnDef="no">
+			    	<th mat-header-cell *matHeaderCellDef> No. </th>
+			    	<td mat-cell *matCellDef="let i = index"> {{ i+1 }} </td>
+			  	</ng-container>
+
+				  <!-- Nama Vendor Column -->
+				  <ng-container matColumnDef="name">
+				    <th mat-header-cell  *matHeaderCellDef> Vendor </th>
+				    <td mat-cell *matCellDef="let vendor"> {{vendor.name}} </td>
+				  </ng-container>
+
+				  <!-- Alamat Column -->
+				  <ng-container matColumnDef="address">
+				    <th mat-header-cell  *matHeaderCellDef> Address </th>
+				    <td mat-cell *matCellDef="let vendor"> {{vendor.address}} </td>
+				  </ng-container>
+
+				  <!-- No. Telp Column -->
+				  <ng-container matColumnDef="phone">
+				    <th mat-header-cell *matHeaderCellDef> Phone Number </th>
+				    <td mat-cell *matCellDef="let vendor"> {{vendor.phone}} </td>
+				  </ng-container>
+				  <ng-container matColumnDef="price">
+				    <th mat-header-cell *matHeaderCellDef> Price </th>
+				    <td mat-cell *matCellDef="let vendor"> {{vendor.price | currency:'IDR':'symbol-narrow'}} </td>
+				  </ng-container>
+
+				  <!-- Actions Column -->
+				  <ng-container matColumnDef="action">
+				    <th mat-header-cell *matHeaderCellDef> Action </th>
+				    <td mat-cell *matCellDef="let vendor">
+				    	<mat-select placeholder="Select an action">
+							<mat-option [value]="Details" routerLink="/vendor-detail/{{ vendor.id }}">Vendor Detail </mat-option>
+							<mat-option [value]="Priceedit" (click)="priceEdit(vendor.id,vendor.price)">Edit Harga </mat-option>
+							<mat-option [value]="remove" (click)="removeVendor(obj.id,vendor.id)">Remove </mat-option>
+				    	</mat-select>
+				    </td>
+				  </ng-container>
+
+				  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+				  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+				  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+			</table>
+			<mat-paginator  [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" (page) = "changePage($event)" >
+			</mat-paginator>
+		</div>
+	</div>
+
+	<!-- Images -->
+	<div>
+		<h3>Product's Images</h3>
+		<button mat-stroked-button (click)='openDialog(obj.id, 0, 2)'>Add Image</button>
+		<div>
+			<table>
+				<tr>
+					<th>Product Image</th>
+					<th>Action</th>
+				</tr>
+				<tr *ngFor='let productImage of productImages'>
+					<th>
+						<mat-card class="profile-card">
+						  <img mat-card-image src="" alt="" id="{{productImage.id}}" (click)="changeImage(1)">
+						</mat-card>
+					</th>
+					<th>
+						<button mat-stroked-button (click)='openDialog(obj.id, productImage.id, 4)'>Edit</button>
+						<button mat-stroked-button color="warn"  type="button" (click)="openDialog(productImage.id, 0, 3)">Delete</button>
+					</th>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>

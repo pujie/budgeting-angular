@@ -1,0 +1,52 @@
+<button mat-icon-button aria-label="Home" (click)="gotoBudgets()">
+  <mat-icon>Budgets</mat-icon>
+</button>
+<button mat-button [matMenuTriggerFor]="divisionmenu">Division</button>
+<mat-menu #divisionmenu="matMenu">
+  <button *ngFor="let division of divisions" mat-menu-item>{{division.name}}</button>
+</mat-menu>
+<button mat-button [matMenuTriggerFor]="menucity">City</button>
+<mat-menu #menucity="matMenu">
+  <button *ngFor="let city of cities" mat-menu-item>{{city.name}}</button>
+</mat-menu>
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+  <!--- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" -->
+
+  <!-- Position Column -->
+  <ng-container matColumnDef="position">
+    <th mat-header-cell *matHeaderCellDef> No. </th>
+    <td mat-cell *matCellDef="let element; let i=index;"> {{i+1}} </td>
+  </ng-container>
+  <ng-container matColumnDef="createdate">
+    <th mat-header-cell *matHeaderCellDef> Date </th>
+    <td mat-cell *matCellDef="let element"> {{element.createdate}} </td>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="transttype">
+    <th mat-header-cell *matHeaderCellDef> Transaction Type </th>
+    <td mat-cell *matCellDef="let element"> {{element.transttype}} </td>
+  </ng-container>
+
+  <!-- description Column -->
+  <ng-container matColumnDef="description">
+    <th mat-header-cell *matHeaderCellDef> description </th>
+    <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+  </ng-container>
+
+  <!-- amount Column -->
+  <ng-container matColumnDef="amount">
+    <th mat-header-cell *matHeaderCellDef> amount </th>
+    <td mat-cell *matCellDef="let element"> {{element.amount| currency : 'IDR' : 'symbol-narrow'}} </td>
+  </ng-container>
+  <ng-container matColumnDef="username">
+    <th mat-header-cell *matHeaderCellDef> User Create </th>
+    <td mat-cell *matCellDef="let element"> {{element.username}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+

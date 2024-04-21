@@ -1,0 +1,17 @@
+#kiri{
+	margin-right: 5px;
+}
+.title{
+	font-family: "calibri";
+}
+#main{
+	display: flex;
+	flex-direction:row;
+}
+#nam{
+	margin-right: 20px;
+	color: #808080;
+}
+.kanan{
+	margin-left: 5px;
+}

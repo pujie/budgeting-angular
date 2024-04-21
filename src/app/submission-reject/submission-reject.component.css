@@ -1,0 +1,23 @@
+.kiri{
+	width: 30%;
+	display: inline-block;
+	font-family: "calibri";
+	font-size: 1.1vw;
+	margin-left: 35%;
+}
+
+th{
+	text-align: left;
+	padding: 1% 2%;
+	background-color: #fdb913;
+    border: 1px solid #fdb913;
+	width: 40%;
+}
+
+.subbutton{
+	display: inline-block;
+}
+
+.back{
+	float: right;
+}

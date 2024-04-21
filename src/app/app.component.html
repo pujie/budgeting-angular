@@ -1,0 +1,61 @@
+<mat-toolbar>
+	<mat-toolbar-row>
+	<span>
+		<div class="menu print-hidden" [hidden]="login">
+			<button class="fontsize" mat-button [matMenuTriggerFor]="vendor">Vendor</button>
+			<mat-menu #vendor="matMenu">
+				<button mat-menu-item class="fontsize" routerLink="/vendor">Vendors List</button>
+				<div [hidden]="isPurchasingMember">
+					<button mat-menu-item class="fontsize" routerLink="/savevendor">Add Vendor</button>
+				</div>
+			</mat-menu>
+			<button mat-button class="fontsize" routerLink="/categories">Categories</button>
+			<button class="fontsize" mat-button [matMenuTriggerFor]="product">Product</button>
+			<mat-menu #product="matMenu">
+				<button mat-menu-item class="fontsize" routerLink="/product"> Products List</button>
+				<div [hidden]="isPurchasingMember">
+					<button mat-menu-item class="fontsize" routerLink="/product-save">Add Product</button>
+				</div>
+			</mat-menu>
+			
+			
+			<button *ngIf="isNotSales" class="fontsize" mat-button routerLink='/submission-save'>Submission</button>
+			<button *ngIf="isSales" class="fontsize" mat-button routerLink='/salessubmissionpage'>Submission</button>
+			<button class="fontsize" mat-button routerLink='/history'>History</button>
+			<button class="fontsize" mat-button routerLink='/summary'>Summary</button>
+			<button class="fontsize" mat-button [matMenuTriggerFor]="help">Help</button>
+				<mat-menu #help="matMenu">
+					<button mat-menu-item (click)="downloadManual()">Download Manual</button>
+				</mat-menu>
+		</div>
+		<div class="logo print-hidden" [hidden]="true"><img src="assets/logo.png" alt=""></div>
+	
+	</span>
+	<span class="example-spacer"></span>
+	<mat-icon class="example-icon" aria-hidden="false" aria-label="Example delete icon">
+		<div class="user print-hidden" [hidden]="login">
+			<div class="center-vertically cpointer">
+					<mat-label [matMenuTriggerFor]="userProperties" class="pointer">{{user.name}}</mat-label>
+					<mat-icon svgIcon="usericon" mat-button [matMenuTriggerFor]="userProperties" class="cpointer pointer fontsize"></mat-icon>
+			</div>
+			<mat-menu #userProperties="matMenu">
+				<div [hidden]="hide_plafon">
+					<button mat-menu-item class="fontsize" routerLink="/budgetTable">Plafons Budget</button>
+				</div>
+				<div [hidden]="notadmin">
+					<button mat-menu-item (click)="showServer()">Show server</button>
+					<button mat-menu-item (click)="showUserManager()">Show User Manager</button>
+				</div>
+				<button mat-menu-item class="fontsize" (click)="changePassword()">Change Password</button>
+				<button mat-menu-item class="fontsize" routerLink="/profile/{{user.id}}">Profile</button>
+				<button mat-menu-item class="fontsize" (click)="logout()">Logout</button>
+			</mat-menu>
+		</div>
+	
+	</mat-icon>
+	</mat-toolbar-row>
+</mat-toolbar>
+<div class="line"></div>
+<div class="body">
+	<router-outlet></router-outlet>
+</div>

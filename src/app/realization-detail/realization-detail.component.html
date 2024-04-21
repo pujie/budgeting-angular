@@ -1,0 +1,192 @@
+<div class='title'>
+	<h1>Realization Detail</h1>
+</div>
+<div class="staff">
+	<table>
+		<tr>
+			<th>Subject</th>
+			<td>:</td>
+			<td>{{submitter.subject}}</td>
+		</tr>
+		<tr>
+			<th>Staff Name</th>
+			<td>:</td>
+			<td>{{submitter.staff_name}}</td>
+		</tr>
+		<tr>
+			<th>Submission Date</th>
+			<td>:</td>
+			<td>{{submitter.submission_date | date:'longDate'}}</td>
+		</tr>
+		<tr>
+			<th>Purchase Target</th>
+			<td>:</td>
+			<td>{{submitter.purchase_target | date:'longDate'}}</td>
+		</tr>
+		<tr>
+			<th>Implementation Target</th>
+			<td>:</td>
+			<td>{{submitter.implementation_target | date:'longDate'}}</td>
+		</tr>
+	</table>
+	<button mat-stroked-button class='btnAtas' (click)="backToLastPage()">Back</button>
+	<!-- <button mat-stroked-button color="warn" class='btnAtas' (click)="openDialogStaff( submitter.id )">Delete All</button> -->
+</div>
+<br>
+<div *ngFor="let realization of submission_detail">
+	<div class="item mat-elevation-z8">
+		<div class="kiri">
+			<div class="atas">
+				<h2>Product Details</h2>
+				<table class="mat-elevation-z1">
+					<tr>
+						<th>Name</th>
+						<td>:</td>
+						<td>{{realization.itemname}}</td>
+					</tr>
+					<tr>
+						<th>Brand</th>
+						<td>:</td>
+						<td>{{realization.brand}}</td>
+					</tr>
+					<tr>
+						<th>Part Number</th>
+						<td>:</td>
+						<td>{{realization.partnumber}}</td>
+					</tr>
+					<tr>
+						<th>Description</th>
+						<td>:</td>
+						<td>{{realization.description}}</td>
+					</tr>
+					<tr>
+						<th>Amount</th>
+						<td>:</td>
+						<td>{{realization.amount}}</td>
+					</tr>
+					<tr>
+						<th>Purchase Reason</th>
+						<td>:</td>
+						<td>{{realization.purchase_reason}}</td>
+					</tr>
+					<tr>
+						<th>Placement Location</th>
+						<td>:</td>
+						<td>{{realization.placement_location}}</td>
+					</tr>
+					<tr>
+						<th>Guarantee</th>
+						<td>:</td>
+						<td>{{realization.guarantee}}</td>
+					</tr>
+				</table>
+			</div>
+			<br>
+			<div>
+				<h2>Note</h2>
+				<h3>{{realization.note}}</h3>
+			</div>
+		</div>
+		<div class="kanan">
+			<div class="bawah">
+				<h2>Realization</h2>
+				<table class="mat-elevation-z1">
+					<tr>
+						<th>Proposed</th>
+						<th></th>
+						<th>Realization</th>
+					</tr>
+					<tr>
+						<td>{{realization.proposed_vendor}}</td>
+						<th>Vendor</th>
+						<td>{{realization.vendor}}</td>
+					</tr>
+					<tr>
+						<td>{{realization.amount*realization.proposed_price | currency:'IDR':'symbol-narrow'}}</td>
+						<th>Price</th>
+						<td>{{realization.amount*realization.price | currency:'IDR':'symbol-narrow'}}</td>
+					</tr>
+					<tr>
+						<td>-</td>
+						<th>Tax</th>
+						<td>{{realization.ppn | currency:'IDR':'symbol-narrow'}}</td>
+					</tr>
+					<tr>
+						<td>-</td>
+						<th>Delivery Cost</th>
+						<td>{{realization.ongkir | currency:'IDR':'symbol-narrow'}}</td>
+					</tr>
+					<tr>
+						<td>{{realization.proposed_totalprice | currency:'IDR':'symbol-narrow'}}</td>
+						<th>Total Price</th>
+						<td>{{realization.final_price | currency:'IDR':'symbol-narrow'}}</td>
+					</tr>
+					<tr>
+						<th colspan="2">Difference</th>
+						<td>{{realization.difference | currency:'IDR':'symbol-narrow'}}</td>
+					</tr>
+				</table>
+			</div>
+			<br>
+	<div class="bawah">
+		<h2>Payment</h2>
+		<table class="mat-elevation-z1">
+			<tr>
+				<th>Payment Date</th>
+				<th>Payment Type</th>
+				<th>Amount</th>
+				<th>Action</th>
+			</tr>
+			<tr *ngFor="let payment of paymentresult">
+				<td>{{payment.payment_date | date:'longDate'}}</td>
+				<td>{{payment.payment_type}}</td>
+				<td>{{payment.amount | currency:'IDR':'symbol-narrow'}}</td>
+				<td>
+				<mat-select placeholder="Select an action">
+					<div [hidden]='notAuthorized'>
+						<mat-option [value]="editRealization" routerLink="/payment-update/{{ realization.id }}/{{ payment.id }}">Detail</mat-option>
+					<mat-option [value]="Delete" (click)="openDialog( submission.id )">Delete</mat-option>
+					</div>
+					<div [hidden]='!notAuthorized'>
+						<mat-option>None</mat-option>
+					</div>
+				</mat-select>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">Total</td>
+				<td>{{submission_detail[0].totalpayment | currency:'IDR':'symbol-narrow'}}</td>
+				<td></td>
+			</tr>
+		</table>
+		<br>
+		<table class="mat-elevation-z1">
+			<tr>
+				<th>Not Yet Paid</th>
+				<td>{{realization.sisa | currency:'IDR':'symbol-narrow'}}</td>
+			</tr>
+			<tr>
+				<th>Over Payment</th>
+				<td>{{realization.lebihbayar | currency:'IDR':'symbol-narrow'}}</td>
+			</tr>
+		</table>
+	</div>
+</div>
+<br>
+<div [hidden]='notAuthorized'>
+	<div class="delete">
+		<button mat-stroked-button color="warn" class='edit' (click)="openDialogProduct( realization.id )">Delete</button>
+	</div>
+	<div class="btnBawah">
+		<div [hidden]="realization.status==1 || realization.status==0 || realization.status==3">		
+			<button mat-stroked-button routerLink="/payment-save/{{ realization.id }}" class='edit' [disabled]='realization.sisa <= 0'>Add Payment</button>
+			<button mat-stroked-button routerLink="/realization-update/{{ realization.submission_id }}/{{ realization.id }}" class='edit'>Edit Realization</button>
+		</div>
+		<div [hidden]="realization.status!=1">
+			<button mat-stroked-button  class='edit' disabled>Approve First!</button>
+		</div>
+	</div>
+</div>
+<br>
+</div>
+</div>

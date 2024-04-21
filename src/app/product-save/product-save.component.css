@@ -1,0 +1,16 @@
+.kanan{
+	margin-left: 5px;
+}
+.kiri{
+	margin-right: 5px;
+}
+.title{
+	font-family: "calibri";
+}
+.button{
+	display: inline-block;
+}
+
+table{
+	width: 25%;
+}

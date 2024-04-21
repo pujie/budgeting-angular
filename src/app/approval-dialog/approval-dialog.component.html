@@ -1,0 +1,28 @@
+<div>
+	<div>
+		<h2 mat-dialog-title>{{obj.action}} this submission?</h2>
+		<mat-dialog-content>
+			<div [hidden]="!reject">
+				<div class="container">
+					<mat-form-field>
+					<input type="text" matInput [(ngModel)]="obj.reason" name="reason" id = "reason"
+					class="full-width" placeholder="Reason" required >
+					</mat-form-field>
+				</div>
+			</div>
+			<div [hidden]="reject">
+				Are you sure?
+				<mat-dialog-actions>
+					<button mat-button (click)="onNoClick()">No</button>
+					<button mat-button color="warn" (click)="onYesClick(obj)">Yes</button>						
+				</mat-dialog-actions>
+			</div>
+				<mat-dialog-actions [hidden]="!reject">
+					<button mat-button color="warn" (click)="onSave(obj)">Save</button>
+				</mat-dialog-actions>			
+		</mat-dialog-content>		
+</div>
+	<div [hidden]="obj.canApprove">
+		<h2 mat-dialog-title>You Cant Approve This Submissions!</h2>
+	</div>
+</div>

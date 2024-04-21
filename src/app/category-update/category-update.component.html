@@ -1,0 +1,36 @@
+<div class="title">
+	<h1>Update Kategori</h1>
+</div>
+
+<!-- Form -->
+<div>
+	<!-- nama kategori -->
+	<div class="container">
+		<mat-form-field>
+		<input type="text" matInput [(ngModel)]="category.name"
+		class="full-width" placeholder="Name" #name="ngModel" required>
+		</mat-form-field>
+	</div>
+
+	<!-- deskripsi kategori -->
+	<div class="container">
+		<mat-form-field>
+		<textarea type="text" matInput [(ngModel)]="category.description" name="desc" id = "desc"
+		class="full-width" placeholder="Description " #description="ngModel" required>
+		</textarea>
+		</mat-form-field>
+	</div>
+
+	<!-- Action Button -->
+	<button mat-stroked-button id='kiri' (click)="updateCategory(category)">Update</button>
+	<button mat-stroked-button routerLink="/category-detail/{{ category.id }}">Back</button>
+
+	<!-- deskripsi kategori -->
+	<div class="container" id='hide'>
+		<mat-form-field>
+		<input type="text" matInput [(ngModel)]="category.id" name="id" id = "id"
+		class="full-width" placeholder="ID Kategori" #id="ngModel" required>
+		</mat-form-field>
+	</div>
+
+</div>

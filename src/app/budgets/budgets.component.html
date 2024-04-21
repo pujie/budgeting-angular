@@ -1,0 +1,74 @@
+<mat-toolbar>
+  <mat-toolbar-row>
+    <button mat-button (click)="budgetAdd()">Add Plafon</button>
+    <button mat-button (click)="recalculate()">Recalculate</button>
+  </mat-toolbar-row>
+  <mat-toolbar-row>
+      Filter{{year}}
+  <span class="spacefiller"></span>
+  <mat-form-field>
+      <mat-label>Divisi</mat-label>
+      <mat-select [(ngModel)]="division">
+        <mat-option *ngFor="let division of divisions" [value]="division.id" (click)="populateBudgets($event)">
+          {{division.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  <mat-form-field>
+      <mat-label>Quarter</mat-label>
+      <mat-select [(ngModel)]="quarterFilter">
+        <mat-option *ngFor="let quarter of quarters" [value]="quarter.value" (click)="populateBudgets($event)">
+          {{quarter.viewValue}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>City</mat-label>
+      <mat-select [(ngModel)]="city">
+        <mat-option *ngFor="let city of cities" [value]="city.id" (click)="populateBudgets($event)">
+          {{city.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Tahun</mat-label>
+      <mat-select [(ngModel)]="yearfilter">
+        <mat-option *ngFor="let year of years" [value]="year.value" (click)="populateBudgets($event)">
+          {{year.viewValue}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-list role="list">
+  <mat-list-item  *ngFor="let budget of budgets">
+    <span slot="start">
+      <h3 matLine>{{budget.city}} </h3>
+      <p matLine>
+        <span>Quarter: {{budget.quarter}}</span>,
+        <span>Division: {{budget.division}}</span>, 
+        <span>Tahun: {{budget.year}}</span>
+      </p>
+      <p matLine>
+        <span>Budget used: {{budget.budgetused|number}},Budget balance: {{budget.restof|number}}</span>
+      </p>
+    </span>
+    <span class="spacefiller"></span>
+    <span slot="end" class="budgetlimit kawe">{{budget.budgetlimit|number}}</span>
+    <span slot="end" class="budgetlimit ori">{{budget.budgetlimit|number}}</span>
+  </mat-list-item>
+  <mat-divider></mat-divider>
+  <mat-list-item>
+    <span slot="start">
+      <p matLine>
+        <span>Total used: {{budgetSum.budgetused|number}}</span>
+      </p>
+      <p matLine>
+        <span>Total balance: {{budgetSum.restof|number}}</span>
+      </p>
+    </span>
+    <span class="spacefiller"></span>
+    <span slot="end">Total: {{budgetSum.budgetlimit|number}}</span>
+  </mat-list-item>
+</mat-list>

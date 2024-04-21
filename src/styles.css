@@ -1,0 +1,52 @@
+/* You can add global styles to this file, and also import other style files */
+@import '../node_modules/~@angular/material/prebuilt-themes/deeppurple-amber.css';
+.title{
+	text-align: center;
+	font-family: "calibri";
+}
+body{
+	margin: 0;
+}
+
+.full-width{
+    width: 100%
+}
+input{
+	margin: 4px
+}
+.container{
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+#hide{
+	visibility: hidden;
+}
+table {
+  width: 100%;
+}
+
+.kanan{
+	margin-left: 5px;
+}
+.kiri{
+	margin-right: 5px;
+}
+h2{
+	font-family: "calibri";
+}
+.submissionButton{
+	float: right;
+}
+
+@media print{
+	.print-hidden, .print-hidden *{
+		display: none;
+	}
+}
+
+.nominal{
+	text-align: right;
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

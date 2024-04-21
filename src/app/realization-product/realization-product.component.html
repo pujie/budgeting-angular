@@ -1,0 +1,85 @@
+<div class='title'>
+	<h1>Realization Per Product</h1>	
+</div>
+
+<!-- Table -->
+<div>
+	<!-- search -->
+	<mat-form-field>
+	<input type="text" matInput [(ngModel)]="searchdata" (keydown)="searchKeyDown($event,searchdata)" placeholder="Search">
+	</mat-form-field>
+	<mat-icon svgIcon="search" mat-button  (click)="doSearch(searchdata)" class="cpointer"></mat-icon>
+
+	<div class="submissionButton">
+		<button mat-stroked-button id="submissionStaff" routerLink="/realization-staff">Realization Per Staff</button>
+	</div>
+
+	<!-- list of Submissions -->
+	<table mat-table table [dataSource]="listOfRealization" class="mat-elevation-z8">
+		<!-- No Column -->
+		<ng-container matColumnDef="no">
+	    	<th mat-header-cell *matHeaderCellDef> No. </th>
+	    	<td mat-cell *matCellDef="let submission; let i = index"> {{ i+1 }} </td>
+	  	</ng-container>
+
+	  	<!--id Coumn -->
+		<ng-container matColumnDef="id" hidden="hidden">
+	    	<th mat-header-cell *matHeaderCellDef hidden="hidden"> id. </th>
+	    	<td mat-cell *matCellDef="let submission" hidden="hidden"> {{submission.submission_id}} </td>
+	  	</ng-container>
+
+		  <!-- Submission date Column -->
+		  <ng-container matColumnDef="itemname">
+		    <th mat-header-cell  *matHeaderCellDef> Item Name </th>
+		    <td mat-cell *matCellDef="let submission"> {{submission.itemname}} </td>
+		  </ng-container>
+
+		  <!-- staff name Column -->
+		  <ng-container matColumnDef="brand">
+		    <th mat-header-cell  *matHeaderCellDef> Brand </th>
+		    <td mat-cell *matCellDef="let submission"> {{submission.brand}} </td>
+		  </ng-container>
+
+		  <!-- implementation date Column -->
+		  <ng-container matColumnDef="partnumber">
+		    <th mat-header-cell *matHeaderCellDef> Part Number </th>
+		    <td mat-cell *matCellDef="let submission"> {{submission.partnumber}} </td>
+		  </ng-container>
+
+		  <!-- purchase date Column -->
+		  <ng-container matColumnDef="decription">
+		    <th mat-header-cell *matHeaderCellDef> Description </th>
+		    <td mat-cell *matCellDef="let submission"> {{submission.description}} </td>
+		  </ng-container>
+
+		  <!-- purchase date Column -->
+		  <ng-container matColumnDef="information">
+		    <th mat-header-cell *matHeaderCellDef> Information </th>
+		    <td mat-cell *matCellDef="let submission"> {{submission.information}} </td>
+		  </ng-container>
+
+		  <!-- purchase date Column -->
+		  <ng-container matColumnDef="reason">
+		    <th mat-header-cell *matHeaderCellDef> Reason </th>
+		    <td mat-cell *matCellDef="let submission"> {{submission.purchase_reason}} </td>
+		  </ng-container>
+
+		  <!-- Actions Column -->
+		  <ng-container matColumnDef="action">
+		    <th mat-header-cell *matHeaderCellDef> Action </th>
+		    <td mat-cell *matCellDef="let submission">
+		    	<mat-select placeholder="Select an action">
+		    		<mat-option [value]="editRealization" routerLink="/realization-detail/{{ submission.submission_id }}">Detail</mat-option>
+        			<mat-option [value]="Delete" (click)="openDialog( submission.id )">Delete</mat-option>
+		    	</mat-select>
+		    </td>
+		  </ng-container>
+
+		  <tr mat-header-row *matHeaderRowDef="displayedColumnsProduct"></tr>
+		  <tr mat-row *matRowDef="let row; columns: displayedColumnsProduct;"></tr>
+
+		  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+	</table>
+	<mat-paginator  [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" (page) = "changePage($event)" >
+	</mat-paginator>
+</div>

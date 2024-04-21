@@ -1,0 +1,58 @@
+<div class='title'>
+	<h1>{{category.name}}</h1>
+	<h5>Category Detail</h5>
+</div>
+<div>
+	<div>
+		<div class="container">
+			<mat-form-field>
+			<input type="text" matInput [(ngModel)]="category.name"
+			class="full-width" placeholder="Name" #name="ngModel" disabled>
+			</mat-form-field>
+		</div>
+		<div class="container">
+			<mat-form-field>
+			<textarea type="text" matInput [(ngModel)]="category.description" name="desc" id = "desc"
+			class="full-width" placeholder="Description " #description="ngModel" disabled>
+			</textarea>
+			</mat-form-field>
+		</div>
+	</div>
+	<div>
+		<button mat-stroked-button id='kiri' routerLink="/updatecategory/{{ category.id }}">Edit</button>
+		<button mat-stroked-button routerLink="/categories">Back</button>
+	</div>
+	<br>
+	<div>
+		<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+		  	<ng-container matColumnDef="no">
+		      <th mat-header-cell *matHeaderCellDef> No. </th>
+		      <td mat-cell *matCellDef="let result; let i = index"> {{ i+1 }} </td>
+		  	</ng-container>
+		  	<ng-container matColumnDef="name">
+		    	<th mat-header-cell *matHeaderCellDef> Name </th>
+		    	<td mat-cell *matCellDef="let result"> {{result.name}} </td>
+		  	</ng-container>
+		  	<ng-container matColumnDef="partnumber">
+		  		<th mat-header-cell *matHeaderCellDef> Part Number </th>
+		  		<td mat-cell *matCellDef="let result"> {{result.partnumber}} </td>
+			</ng-container>
+			<ng-container matColumnDef="unit">
+		  		<th mat-header-cell *matHeaderCellDef> Unit </th>
+		  		<td mat-cell *matCellDef="let result"> {{result.unit}} </td>
+			</ng-container>
+			<ng-container matColumnDef="action">
+				<th mat-header-cell *matHeaderCellDef> Action </th>
+				    <td mat-cell *matCellDef="let result">
+				    	<mat-select placeholder="Select an action">
+				    		<mat-option [value]="Details" routerLink="/product-detail/{{ result.id }}">View Detail</mat-option>
+				    	</mat-select>
+					</td>
+			</ng-container>
+			<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+			<tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+		  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+		</table>
+		<mat-paginator  [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" (page) = "changePage($event)" ></mat-paginator>
+	</div>
+</div>

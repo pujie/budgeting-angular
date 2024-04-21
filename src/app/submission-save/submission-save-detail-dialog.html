@@ -1,0 +1,92 @@
+<div class='title'>
+	<h1 class="addDetail">Add New Detail</h1>
+
+	<mat-form-field>
+		<mat-select id="categoryItem" name="categoryItem" class="full-width"  placeholder="Category">
+  		<mat-option *ngFor="let category of listOfCategories" [value]='category.name' (click)='getCategoryProducts(category.id)'>{{category.name}}</mat-option>
+	 	</mat-select>
+ 	</mat-form-field>
+</div>
+
+<div class="detail">
+	<div class="detailAtas">
+		<div class="detailAtasKiri">
+			<mat-form-field>
+			<input class="full-width" matInput type="text" id="newAttributeItem" [(ngModel)]="newAttribute.item" name="newAttributeItem" [matAutocomplete]="auto" placeholder="Item Name" (keyup)='filter(newAttribute.item)'/>
+			<mat-autocomplete #auto="matAutocomplete">
+			<div [hidden]='productOption'>
+				<mat-option *ngFor="let option of listOfProducts" [value]="option.name" (click)="autoFill(newAttribute.item)">
+				{{option.name}}
+				</mat-option>
+			</div>
+			</mat-autocomplete>
+			</mat-form-field>
+
+			<mat-form-field>
+			<input class="full-width" matInput type="text" id="newAttributPartNumber" [(ngModel)]="newAttribute.partnumber" name="newAttributeCode" placeholder="Part Number" disabled/>
+			</mat-form-field>
+
+			<mat-form-field>
+			<input class="full-width" matInput type="text" id="newAttributeBrand" [(ngModel)]="newAttribute.brand" name="newAttributeBrand" placeholder="Brand" />
+			</mat-form-field>
+
+			<mat-form-field>
+				<mat-select placeholder="Proposed Vendor">
+					<div [hidden]='addNewVendorOption'>
+						<mat-option (click)='openDialog(newAttribute.productId)'>Add New Vendor</mat-option>
+					</div>
+					<mat-option *ngFor="let vendor of listOfVendors" [value]="vendor.name" (click)="setVendorId(vendor.name)">{{vendor.name}}</mat-option>
+				</mat-select>	
+			</mat-form-field>
+		</div>
+
+		<div class="detailAtasKanan">
+			<!-- Proposed price -->
+			<mat-form-field>
+			<input class="full-width" matInput currencyMask id="newAttributeProposedPrice" [(ngModel)]="newAttribute.proposed_price" name="newAttributeProposedPrice" (keyup)="calculateTotal()" (keypress)="numCheck($event)" placeholder="Proposed Price" [options]="{ prefix: 'Rp ', thousands: '.', precision: '0' }"/>
+			</mat-form-field>
+
+			<!-- Amount -->
+			<mat-form-field>
+			<input class="full-width" matInput type="number" id="newAttributeAmount" [(ngModel)]="newAttribute.amount" (change)="calculateTotal()" (keypress)="numCheck($event)" name="newAttributeAmount" placeholder="Amount" />
+			</mat-form-field>
+
+			<!-- discount level -->
+			<mat-form-field>
+			<input class="full-width" matInput type="text" id="newAttributeDiscountLevel" [(ngModel)]="newAttribute.discountlevel" name="newAttributeDiscountLevel" placeholder="Discount Level (%)" disabled/>
+			</mat-form-field>
+
+			<!-- total price -->
+			<mat-form-field>
+			<input class="full-width" matInput currencyMask id="newAttributeProposedTotalPrice" [(ngModel)]="newAttribute.proposed_totalprice" name="newAttributeProposedTotalPrice" (keyup)="calculateDiscount(); maxCheck(newAttribute.proposed_totalprice, newAttribute.amount, newAttribute.proposed_price, $event)" (keypress)="numCheck($event)" (keydown)="maxCheck(newAttribute.proposed_totalprice, newAttribute.amount, newAttribute.proposed_price, $event)" placeholder="Proposed Total Price" [options]="{ prefix: 'Rp ', thousands: '.', precision: '0' }" />
+			</mat-form-field>
+
+		</div>
+	</div>
+	<div class="detailBawah">
+		<mat-form-field>
+		<textarea  matInput class="full-width" id="newAttributeDescription" [(ngModel)]="newAttribute.description" name="newAttributeDescription" [value]=' ' placeholder="Description">
+		</textarea>
+		</mat-form-field>
+
+<!-- 		<mat-form-field>
+		<textarea  matInput class="full-width" id="newAttributeInformation" [(ngModel)]="newAttribute.information" name="newAttributeInformation" [value]=' ' placeholder="Information">
+		</textarea>
+		</mat-form-field> -->
+
+		<mat-form-field>
+		<textarea  matInput class="full-width" id="newAttributePurchaseReason" [(ngModel)]="newAttribute.purchase_reason" name="newAttributePurchaseReason" [value]=' ' placeholder="Purchase Reason">
+		</textarea>
+		</mat-form-field>
+
+		<mat-form-field>
+		<mat-select [(ngModel)]="newAttribute.placement_location" id="newAttributePlacementLocation" name="newAttributePlacementLocation" class="full-width"  placeholder="Placement Location">
+  		<mat-option *ngFor="let pl of placementLocation" [value]='pl'>{{pl}}</mat-option>
+	 	</mat-select>
+		</mat-form-field>
+
+		<button mat-stroked-button type="button" (click)="addVendor()">Add</button>
+
+		<button mat-stroked-button color='warn' type="button" (click)="cancel()">Cancel</button>
+	</div>
+</div>

@@ -1,0 +1,40 @@
+<div [hidden]='deleteProduct'>
+	<h2 mat-dialog-title>Delete this product?</h2>
+	<mat-dialog-content>Are you sure?</mat-dialog-content>
+	<mat-dialog-actions>
+	  <button mat-button (click)="onNoClick()">No</button>
+	  <button mat-button color="warn" (click)="onYesClick(data)">Yes</button>
+	</mat-dialog-actions>
+</div>
+<div [hidden]='addImage'>
+	<mat-toolbar>
+	  <button mat-button (click)="showInputDialog(1)">Upload Product Image</button>
+	  <button mat-button (click)="saveImage()">Save Image</button>
+	  <button mat-button (click)="onNoClick()">Back</button>
+	</mat-toolbar>
+	<input  type="file" (change)="uploadFile(1, $event)" id="uplComponent" style="display:none" >
+	<mat-card class="profile-card">
+	  <img mat-card-image src="" alt="" id="productImage" width="20px" >
+	  <canvas id="mycanvas"></canvas>
+	</mat-card>
+</div>
+<div [hidden]='editImage'>
+	<mat-toolbar>
+	  <button mat-button (click)="showInputDialog(2)">Upload Product Image</button>
+	  <button mat-button (click)="updateImage()">Update Image</button>
+	  <button mat-button (click)="onNoClick()">Back</button>
+	</mat-toolbar>
+	<input  type="file" (change)="uploadFile(2, $event)" id="uplComponents" style="display:none" >
+	<mat-card class="profile-card">
+	  <img mat-card-image src="" alt="" id="productImages" width="20px" >
+	  <canvas id="mycanvas"></canvas>
+	</mat-card>
+</div>
+<div [hidden]='deleteImage'>
+	<h2 mat-dialog-title>Delete this image?</h2>
+	<mat-dialog-content>Are you sure?</mat-dialog-content>
+	<mat-dialog-actions>
+	  <button mat-button (click)="onNoClick()">No</button>
+	  <button mat-button color="warn" (click)="deleteSelectedImage()">Yes</button>
+	</mat-dialog-actions>
+</div>

@@ -1,0 +1,86 @@
+.body{
+	font-family: "calibri";
+}
+
+.ataskiri, .ataskanan{
+	width: 48%;
+	display: inline-block;
+	padding: 1%;
+}
+
+.full-width{
+	width: 100%;
+}
+
+.title h2{
+	margin: 0;
+}
+
+.title h1{
+	margin-bottom: 0;
+}
+
+h2{
+	text-align: center;
+}
+
+.kanan{
+	margin-left: 5px;
+}
+.kiri{
+	margin-right: 5px;
+}
+table{
+	width: 100%;
+    font-size: 1vw;
+}
+
+th{
+    background-color: #fdb913;
+    border: 1px solid #fdb913;
+}
+
+textarea{
+	height: 15px;
+}
+
+.bawah{
+	padding: 1%;
+}
+
+.dialog{
+	display: inline-block;
+	width: 50%;
+	vertical-align: top;
+	text-align: center;
+}
+
+#left-dialog{
+	margin-top: 5px;
+}
+
+.addDetail{
+	margin-top: 0;
+}
+
+.detail mat-form-field{
+	width: 100%;
+}
+
+.detailAtasKiri{
+	display: inline-block;
+	width: 50%;
+}
+
+.detailAtasKanan{
+	display: inline-block;
+	width: 50%;
+	float: right;
+}
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+}
+.submissions-list{
+	text-align: center;
+}

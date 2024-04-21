@@ -1,0 +1,33 @@
+.spacefiller{
+    flex: 1 1 auto;
+}
+.budgetused{
+    margin-right: 2px;
+    text-align: right;
+}
+.budgetlimit{
+    width: 100;
+}
+.ori{
+    width:20px;
+    background-color: aqua;
+}
+.kawe{
+    padding:0px 10px 0 10px;
+}
+.budgetsed .mat-cell .cdk-column-budgetlimit .mat-column-budgetlimit .ng-star-inserted{
+    text-align: right;
+}
+td.mat-cell { 
+    text-align: center; 
+}
+th.mat-header-cell{
+    background-color:dimgrey;
+    color: aliceblue;
+}
+td.mat-cell:nth-child(2n+1){
+    background-color:aliceblue;
+}
+td.mat-cell:first-child{
+    background-color:darkgray;
+}

@@ -1,0 +1,38 @@
+<div class="title">
+  <h1>Product Update</h1>
+</div>
+
+	<div [hidden]='normalSave'>
+		<div class='table'>
+			<label>Associated Vendor</label>
+			<mat-select [(ngModel)]="vendor_id">
+				<mat-option *ngFor="let vendor of vendors" [value]="vendor.id">{{vendor.name}}</mat-option>
+			</mat-select>
+		</div>
+	</div>
+
+	<!-- choose category -->
+	<div>
+	<br>
+	<label>Kategori</label>
+	 <mat-select [(ngModel)]="obj.category_id" placeholder="Choose Category">
+	  	<mat-option *ngFor="let cat of cats" [value]="cat.id">{{cat.name}}</mat-option>
+	 </mat-select>
+	</div>
+
+<br>
+<mat-form-field class="full-width">
+<input type="text" matInput [(ngModel)]="obj.name" placeholder="Product Name" [ngModelOptions]="{standalone:true}" required>
+</mat-form-field>
+
+<mat-form-field class="full-width">
+<input type="text" matInput [(ngModel)]="obj.partnumber" placeholder="Part Number" [ngModelOptions]="{standalone:true}" required>
+</mat-form-field>
+
+<mat-form-field class="full-width">
+<input type="text" matInput [(ngModel)]="obj.unit" placeholder="Unit" [ngModelOptions]="{standalone:true}" required>
+</mat-form-field>
+
+<button mat-stroked-button id="kiri" (click)="updateProduct(obj)">Update</button>
+<button mat-stroked-button  routerLink="/product-detail/{{ obj.id }}">Back to detail</button>
+<button mat-stroked-button class='kanan' routerLink="/product">Back to list</button>

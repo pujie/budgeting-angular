@@ -1,0 +1,17 @@
+<h1>
+  {{category}}
+</h1>
+<div mat-dialog-content class="main">
+  <mat-form-field>
+    <mat-select [(ngModel)]="product" id="product" placeholder="Product">
+      <mat-option *ngFor="let product of products" value="{{product.id}}">{{product.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput type="text" [(ngModel)]="price" placeholder="Price">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button matButton (click)="associateProductVendor()">Save</button>
+  <button matButton (click)="closeDialog()">Close</button>
+</div>

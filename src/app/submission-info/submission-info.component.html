@@ -1,0 +1,33 @@
+<h1>Submission Info</h1>
+<mat-list #shoes class="fullwidth">
+  <mat-list-item>
+    <span>Staff</span><span class="spacer"></span> <span>{{obj.createuser}}</span> 
+  </mat-list-item>
+  <mat-list-item>
+    <span>Name</span><span class="spacer"></span> <span>{{obj.itemname}}</span> 
+  </mat-list-item>
+  <mat-list-item>
+    <span>Brand</span><span class="spacer"></span> <span>{{obj.brand}}</span> 
+  </mat-list-item>
+  <mat-list-item>
+    <span>Part number</span><span class="spacer"></span> <span>{{obj.partnumber}}</span> 
+  </mat-list-item>
+  <mat-list-item>
+    <span>Description</span><span class="spacer"></span> <span>{{obj.description}}</span> 
+  </mat-list-item>
+  <mat-list-item>
+    <span>Vendor</span><span class="spacer"></span> <span>{{obj.vendor}}</span> 
+  </mat-list-item>
+  <mat-list-item>
+    <span>Purchase Reason</span><span class="spacer"></span> <span>{{obj.purchase_reason}}</span> 
+  </mat-list-item>
+  <mat-list-item *ngIf="ucansee">
+    <span>Total Price</span><span class="spacer"></span> <span>{{obj.totalprice}}</span> 
+  </mat-list-item>
+  <mat-list-item>
+    <span>Arrival Date</span><span class="spacer"></span> <span>{{obj.arrivaldate}}</span> 
+  </mat-list-item>
+</mat-list>
+
+<p>
+</p>

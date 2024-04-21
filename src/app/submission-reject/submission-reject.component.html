@@ -1,0 +1,89 @@
+<div class='title'>
+	<h1>Submission Reject</h1>
+</div>
+<div class="kiri">
+	<div class="atas">
+		<table class="mat-elevation-z1">
+			<tr>
+				<th>No. Budgeting</th>
+				<td>:</td>
+				<td>{{submisssion.budgeting_number}}</td>
+			</tr>
+			<tr>
+				<th>Implementation Target</th>
+				<td>:</td>
+				<td>{{submisssion.implementation_target | date:'longDate'}}</td>
+			</tr>
+			<tr>
+				<th>Purchase Target</th>
+				<td>:</td>
+				<td>{{submisssion.purchase_target | date:'longDate'}}</td>
+			</tr>
+			<tr>
+				<th>Name</th>
+				<td>:</td>
+				<td>{{submission_detail.itemname}}</td>
+			</tr>
+			<tr>
+				<th>Brand</th>
+				<td>:</td>
+				<td>{{submission_detail.brand}}</td>
+			</tr>
+			<tr>
+				<th>Part Number</th>
+				<td>:</td>
+				<td>{{submission_detail.partnumber}}</td>
+			</tr>
+			<tr>
+				<th>Description</th>
+				<td>:</td>
+				<td>{{submission_detail.description}}</td>
+			</tr>
+			<tr>
+				<th>Proposed Vendor</th>
+				<td>:</td>
+				<td>{{vendorName}}</td>
+			</tr>
+			<tr>
+				<th>Proposed Price</th>
+				<td>:</td>
+				<td>{{submission_detail.proposed_price| currency:'IDR':'symbol-narrow'}}</td>
+			</tr>
+			<tr>
+				<th>Amount</th>
+				<td>:</td>
+				<td>{{submission_detail.amount}}</td>
+			</tr>
+			<tr>
+				<th>Discount</th>
+				<td>:</td>
+				<td>{{discountPrice | currency:'IDR':'symbol-narrow'}}</td>
+			</tr>
+			<tr>
+				<th>Proposed Total Price</th>
+				<td>:</td>
+				<td>{{submission_detail.proposed_totalprice| currency:'IDR':'symbol-narrow'}}</td>
+			</tr>
+			<tr>
+				<th>Purchase Reason</th>
+				<td>:</td>
+				<td>{{submission_detail.purchase_reason}}</td>
+			</tr>
+			<tr>
+				<th>Placement Location</th>
+				<td>:</td>
+				<td>{{submission_detail.placement_location}}</td>
+			</tr>
+		</table>
+	</div>
+</div>
+<br>
+<br>
+<div class='kiri'>
+	<h2>Reject Reason</h2>
+	{{ submission_detail.reject_reason }}
+	<br><br>
+	<div class='back'>
+		<button mat-stroked-button class= 'kanan' (click)="backToLastPage()">Back</button>
+	</div>
+</div>

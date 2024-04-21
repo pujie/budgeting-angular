@@ -1,0 +1,16 @@
+<mat-toolbar>
+  <button mat-button (click)="showInputDialog()">Upload {{imagetype}}</button>
+  <button mat-button (click)="updatevendorimage()">Update</button>
+  <button mat-button (click)="backToLastPage()">Back</button>
+</mat-toolbar>
+<input  type="file" (change)="uploadFile($event)" id="uplComponent" style="display:none" >
+<mat-card class="profile-card">
+  <mat-card-header>
+      <mat-card-title>{{obj.name}}</mat-card-title>
+  </mat-card-header>
+  <img mat-card-image src="" alt="" id="profileImage" width="20px" >
+  <canvas id="mycanvas"></canvas>
+  <mat-card-content>
+      <span>{{obj.name}}</span>
+  </mat-card-content>
+</mat-card>

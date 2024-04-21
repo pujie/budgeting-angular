@@ -1,0 +1,7 @@
+<p>
+  myproductimages works!
+</p>
+<mat-card class="profile-card" *ngFor='let productImage of productImages'>
+  {{productImage.image}}
+  <img mat-card-image src="" alt="" id="{{productImage.id}}" (click)="changeImage(1)" width="100" height="100">
+</mat-card>

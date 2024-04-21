@@ -1,0 +1,16 @@
+<div class="title">
+  <h1>Login</h1>
+</div>
+<div class="body">
+	<mat-form-field class="full-width" >
+	  <input type="text" matInput placeholder="email" id="useremail" [(ngModel)]="user.email" (keyup)="changeToPass($event, password)" (focus)="emailGotFocus()">
+	</mat-form-field>
+	<mat-form-field class="full-width" >
+	  <input type="password" matInput placeholder="password" [(ngModel)]="user.password" 
+	  #password (keyup)="login($event)">
+	</mat-form-field>
+	<button class="loginbtn" mat-button (click)="doLogin()">Login</button>
+	<div class="correct" [hidden]="correct">
+	  Username/Password Incorrect
+	</div>
+</div>

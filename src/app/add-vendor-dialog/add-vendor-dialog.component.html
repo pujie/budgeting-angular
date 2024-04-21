@@ -1,0 +1,28 @@
+<h1 mat-dialog-title>Vendor</h1>
+<div mat-dialog-content>
+  <ul>
+    <li>
+      <mat-form-field>
+        <mat-select name="vendor" id="vefndor" [(ngModel)]="vendor" [formControl]="cvendor" required placeholder="Vendor">
+          <mat-option *ngFor="let obj of vendors" [value]="obj.id">{{obj.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-error *ngIf="cvendor.hasError('required')">
+        Vendor <strong>required</strong>
+      </mat-error>
+    </li>
+    <li>
+      <label for="price"></label>
+      <mat-form-field>
+        <input type="text" id="price" matInput [(ngModel)]="price" placeholder="Price" value=0 [formControl]="cprice" required>
+      </mat-form-field>
+      <mat-error *ngIf="cprice.hasError('required')">
+        Price <strong>required</strong>
+      </mat-error>
+    </li>
+  </ul>
+</div>
+<div mat-dialog-actions>
+  <button mat-stroked-button type="button" (click)="addFieldValue()">{{saveLabel}}</button>
+  <button mat-stroked-button type="button" (click)="closeDialog()">Close</button>
+</div>

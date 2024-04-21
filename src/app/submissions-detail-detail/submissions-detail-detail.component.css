@@ -1,0 +1,81 @@
+.warning{
+	color: red;
+	font-weight: bolder;
+	font-style: italic;
+}
+
+.kiri{
+	width: 50%;
+	display: inline-block;
+	font-family: "calibri";
+	font-size: 1.1vw;
+}
+.kanan{
+	width: 40%;
+	display: inline-block;
+	font-family: "calibri";
+	font-size: 1.1vw;
+	vertical-align: top;
+	float: right;
+}
+th{
+	text-align: left;
+	padding: 1% 2%;
+	background-color: #fdb913;
+    border: 1px solid #fdb913;
+	width: 40%;
+}
+
+.subbutton{
+	display: inline-block;
+}
+
+.back{
+	float: right;
+}
+#atas{
+	width: 40%;
+	font-family: "calibri";
+	font-size: 1.1vw;
+	display: block;
+	margin-left: auto;
+    margin-right: auto;
+}
+#left-button{
+	margin-right: 5px;
+}
+#back-button-single{
+	margin-top: 5px;
+}
+
+#tabel-vendor-pembanding{
+	width: auto;
+	text-align: center;
+}
+table th{
+	text-align: center;
+}
+
+button{
+	margin-bottom: 10px;
+}
+table {
+	margin-bottom: 10px
+}
+#resetSelect{
+	margin-top: 5px;
+	width: 100%;	
+}
+
+.button-right{
+	margin-left: 5px;
+}
+#shortenertext{
+    color: red;
+    font-style: italic;
+}
+#shortenertext:hover{
+    color: red;
+	font-style: italic;
+	cursor: pointer;
+}

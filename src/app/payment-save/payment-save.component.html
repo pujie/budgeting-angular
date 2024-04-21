@@ -1,0 +1,26 @@
+<div class='title'>
+	<h1>Add New Payment ({{submission.itemname}})</h1>
+</div>
+<mat-form-field class="full-width">
+	<input matInput [matDatepicker]="picker1"  [(ngModel)]="payment.payment_date" id="payment_date" placeholder="Payment Date" required>
+	<mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+	<mat-datepicker #picker1></mat-datepicker>
+</mat-form-field>
+
+<mat-form-field class="full-width">
+<input currencyMask matInput [(ngModel)]="sisa" [options]="{ prefix: 'Rp ', thousands: '.', precision: '0' }"  placeholder="Not Yet Paid" [ngModelOptions]="{standalone:true}" disabled required>
+</mat-form-field>
+
+<mat-form-field class="full-width">
+<input currencyMask matInput [(ngModel)]="payment.amount" [options]="{ prefix: 'Rp ', thousands: '.', precision: '0' }"  placeholder="Amount" [ngModelOptions]="{standalone:true}"  required>
+</mat-form-field>
+
+<mat-select [(ngModel)]="payment.payment_type" placeholder="Payment Type">
+	<mat-option value="Cash">Cash</mat-option>
+	<mat-option value="Transfer">Transfer</mat-option>
+</mat-select>
+
+<br><br>
+<button mat-stroked-button class='kiri' [disabled]="saveButtonDisabled" (click)="savePayment(payment)">Save</button>
+<button mat-stroked-button color="warn" (click)="clearInput()">Clear</button>
+<button mat-stroked-button class='kanan' (click)="backToLastPage()">Back to list</button>

@@ -1,0 +1,44 @@
+apakah kota ikut kota karyawan yang mengajukan pembelian ataukah ikut kota penempatan barang ?
+evaluasi pembayaran kepada vendor
+penambahan history plafon budget -> perubahan struktur database
+    untuk menelusuri penambahan/penguraran saldo
+    tidak lepas dari desain gui, variable, dan struktur database
+evaluasi ticket, pemantauan data ticket (akurasi durasi, tanggal ticketend), penyesuaian fitur dengan aplikasi lama
+evaluasi simpan survey
+
+
+
+perlu dibuat komponen approval
+
+pekerjaan lambat karena:
+perlu uji coba, adapun untuk uji coba perlu mengkondisikan role, mengkondisikan produk, mengkondisikan environment (sendmail)
+perlu membuat laporan, inipun perlu mengkondisikan status, screenshot
+kode campur baur (warisan developer lama)
+
+
+keterangan pada saat request / submission: butuh rich text editor: special character processor
+
+6: nunggu diapprove
+2: sudah diapprove
+
+
+
+
+submission status:
+0 = Not Active, 
+1 = Belum Approve, 
+2 = Sudah Approve belum dibeli, 
+3 = Rejected, 
+4 = Sudah approve sudah bayar, 
+5 = sudah approve sudah beli tapi belum dibayar, 
+6 = to verify
+7,8 : received
+9 = verified
+update users set email=concat(substr(email,1,length(email)-11),'padinet.om') ;
+
+20210112 
+09:03 Add New Vendor harus berisi alamat vendor (done, menambahkan validasi baik pada existing vendor maupun new vendor)
+16:45 Invalid value pada penghitungan total comparison (submission-detail-detail-dialog, done dengan membulatkan pecahan ppn)
+
+20220405
+14:06 ppn berubah dari 10 % adalah 11 %

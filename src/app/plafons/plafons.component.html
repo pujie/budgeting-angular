@@ -1,0 +1,108 @@
+<div class="title">
+	<h1>Plafons</h1>
+</div>
+<div>
+	<!-- filter -->
+	<div class='filter'>
+		<!-- kota -->
+		<mat-form-field>
+			<mat-select placeholder="Filter by city">
+				<mat-option (click)="_filter(0, 1)">No Filter</mat-option>
+				<mat-option *ngFor="let city of cities" [value]='city.viewValue' (click)="_filter(city.value, 1)">
+			      {{city.viewValue}}
+			    </mat-option>
+			</mat-select>	
+		</mat-form-field>
+
+		<!-- divisi -->
+		<mat-form-field>
+			<mat-select placeholder="Filter by division">
+				<mat-option (click)="_filter(0, 2)">No Filter</mat-option>
+				<mat-option *ngFor="let division of divisions" [value]='division.name' (click)="_filter(division.id, 2)">
+			      {{division.name}}
+			    </mat-option>
+			</mat-select>	
+		</mat-form-field>
+
+		<!-- Quarter -->
+		<mat-form-field>
+			<mat-select placeholder="Filter by quarter">
+				<mat-option (click)="_filter(0, 3)">No Filter</mat-option>
+				<mat-option *ngFor="let quarter of quarters" [value]='quarter.viewValue' (click)="_filter(quarter.value, 3)">
+			      {{quarter.viewValue}}
+			    </mat-option>
+			</mat-select>	
+		</mat-form-field>
+
+		<!-- year -->
+		<mat-form-field>
+			<mat-select placeholder="Filter by year">
+				<mat-option (click)="_filter(0, 4)">No Filter</mat-option>
+				<mat-option *ngFor="let year of years" [value]='year.viewValue' (click)="_filter(year.values, 4)">
+			      {{year.viewValue}}
+			    </mat-option>
+			</mat-select>	
+		</mat-form-field>
+
+		<button mat-stroked-button id="newPlafons" (click)='plafonsDialog(1, 0)'>New Plafons</button>
+	</div>
+
+	<!-- table -->
+	<div>
+		<table mat-table table [dataSource]="plafonsToDisplay" class="mat-elevation-z8">
+
+			<!-- No Column -->
+			<ng-container matColumnDef="no">
+		    	<th mat-header-cell *matHeaderCellDef> No. </th>
+		    	<td mat-cell *matCellDef="let plafons; let i = index"> {{ i+1 }} </td>
+		  	</ng-container>
+
+			<!-- Division Column -->
+			<ng-container matColumnDef="division">
+		    	<th mat-header-cell *matHeaderCellDef> Division </th>
+		    	<td mat-cell *matCellDef="let plafons">{{plafons.division_name}} </td>
+		  	</ng-container>
+
+		  	<!-- city column -->
+		  	<ng-container matColumnDef="city">
+		    	<th mat-header-cell *matHeaderCellDef> City </th>
+		    	<td mat-cell *matCellDef="let plafons"> {{plafons.city}} </td>
+		  	</ng-container>
+
+		  	<!-- quarter column  -->
+		  	<ng-container matColumnDef="quarter">
+		    	<th mat-header-cell *matHeaderCellDef> Quarter </th>
+		    	<td mat-cell *matCellDef="let plafons">{{plafons.quarter}} ({{plafons.quarter_name}}) </td>
+		  	</ng-container>
+
+		  	<!-- year column -->
+		  	<ng-container matColumnDef="year">
+		    	<th mat-header-cell *matHeaderCellDef> Year </th>
+		    	<td mat-cell *matCellDef="let plafons"> {{plafons.year}} </td>
+		  	</ng-container>
+
+		  	<!-- budget limit column -->
+		  	<ng-container matColumnDef="budget_limit">
+		    	<th mat-header-cell *matHeaderCellDef> Budget Limit </th>
+		    	<td mat-cell *matCellDef="let plafons"> {{plafons.budget_limit | currency : 'IDR' : 'symbol-narrow'}} </td>
+		  	</ng-container>
+
+		  	<!-- Actions Column -->
+			<ng-container matColumnDef="action" class="print-hidden">
+				<th mat-header-cell *matHeaderCellDef> Action </th>
+			    <td mat-cell *matCellDef="let plafons">
+			    	<mat-select placeholder="Select an action">
+			    		<mat-option (click)="plafonsDialog(2, plafons.id)">Update Plafon</mat-option>
+			    		<mat-option (click)="plafonsDialog(3, plafons.id)">Delete Plafon</mat-option>
+			    	</mat-select>
+			    </td>
+			</ng-container>
+
+		  	<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+			<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+			<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+		</table>
+		<mat-paginator  [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" (page) = "changePage($event)" ></mat-paginator>
+	</div>
+</div>

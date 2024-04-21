@@ -1,0 +1,122 @@
+<div class='title'>
+	<h1>Realization Update</h1>
+</div>
+<div class="atas">
+	<div class="kiri">
+		<table>
+			<tr>
+				<th>Name</th>
+				<td>:</td>
+				<td>{{realizationToUpdate.itemname}}</td>
+			</tr>
+			<tr>
+				<th>Brand</th>
+				<td>:</td>
+				<td>{{realizationToUpdate.brand}}</td>
+			</tr>
+			<tr>
+				<th>Part Number</th>
+				<td>:</td>
+				<td>{{realizationToUpdate.partnumber}}</td>
+			</tr>
+			<tr>
+				<th>Description</th>
+				<td>:</td>
+				<td>{{realizationToUpdate.description}}</td>
+			</tr>
+			<tr>
+				<th>Amount</th>
+				<td>:</td>
+				<td>{{realizationToUpdate.amount}}</td>
+			</tr>
+			<tr>
+				<th>Information</th>
+				<td>:</td>
+				<td>{{realizationToUpdate.information}}</td>
+			</tr>
+		</table>
+	</div>
+	<div class="kanan">
+		<table>
+			<tr>
+				<th>Subject</th>
+				<td>:</td>
+				<td>{{submitter.subject}}</td>
+			</tr>
+			<tr>
+				<th>Staff Name</th>
+				<td>:</td>
+				<td>{{submitter.staff_name}}</td>
+			</tr>
+			<tr>
+				<th>Submission Date</th>
+				<td>:</td>
+				<td>{{submitter.submission_date | date:'longDate'}}</td>
+			</tr>
+			<tr>
+				<th>Purchase Target</th>
+				<td>:</td>
+				<td>{{submitter.purchase_target | date:'longDate'}}</td>
+			</tr>
+			<tr>
+				<th>Implementation Target</th>
+				<td>:</td>
+				<td>{{submitter.implementation_target | date:'longDate'}}</td>
+			</tr>
+		</table>
+	</div>
+</div>
+<br>
+<div class="bawah">
+	<div class="form">
+		<h2>Proposed</h2>
+		<mat-form-field class="full-width">
+			<input matInput [matDatepicker]="picker1" [min]="currentDate" [(ngModel)]="submitter.purchase_target" id="purchase_target" placeholder="Purchase Target" required disabled>
+			<mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+			<mat-datepicker #picker1></mat-datepicker>
+		</mat-form-field>
+		<mat-form-field class="full-width">
+		<input type="text" matInput value="{{realizationToUpdate.proposed_vendor}}" class="form-control" placeholder="Vendor" required disabled>
+		</mat-form-field>
+		<mat-form-field class="full-width">
+		<input currencyMask matInput [(ngModel)]="realizationToUpdate.proposed_price" [options]="{ prefix: 'Rp ', thousands: '.', precision: '0' }" class="form-control" placeholder="Price" required disabled>
+		</mat-form-field>
+		<mat-form-field class="full-width">
+		<input currencyMask matInput [(ngModel)]="realizationToUpdate.proposed_totalprice" [options]="{ prefix: 'Rp ', thousands: '.', precision: '0' }" class="form-control" placeholder="Total Price" required disabled>
+		</mat-form-field>
+	</div>
+	<div class="form">
+		<h2>Realization</h2>
+		<mat-form-field class="full-width">
+			<input matInput [matDatepicker]="picker2" [min]="currentDate" [(ngModel)]="realizationToUpdate.purchase_date" id="purchase_date" placeholder="Purchase date" required>
+			<mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+			<mat-datepicker #picker2></mat-datepicker>
+		</mat-form-field>
+		<mat-form-field class="full-width">
+		<input type="text" matInput [(ngModel)]="realizationToUpdate.vendor" class="form-control" placeholder="Vendor" [ngModelOptions]="{standalone:true}" required>
+		</mat-form-field>
+		<mat-form-field class="full-width">
+		<input currencyMask matInput [(ngModel)]="realizationToUpdate.price" (keyup)="calculateTotalPrice(realizationToUpdate.price, realizationToUpdate.ppn, realizationToUpdate.ongkir); checkNumber(realizationToUpdate.price, 1)" [options]="{ prefix: 'Rp ', thousands: '.', precision: '0' }" class="form-control" placeholder="Price" [ngModelOptions]="{standalone:true}" required>
+		</mat-form-field>
+		<mat-form-field class="full-width">
+		<input currencyMask matInput [(ngModel)]="realizationToUpdate.ppn" (keyup)="calculateTotalPrice(realizationToUpdate.price, realizationToUpdate.ppn, realizationToUpdate.ongkir); checkNumber(realizationToUpdate.ppn, 2)" [options]="{ prefix: 'Rp ', thousands: '.', precision: '0' }" class="form-control" placeholder="Tax" [ngModelOptions]="{standalone:true}" required>
+		</mat-form-field>
+		<mat-form-field class="full-width">
+		<input currencyMask matInput [(ngModel)]="realizationToUpdate.ongkir" (keyup)="calculateTotalPrice(realizationToUpdate.price, realizationToUpdate.ppn, realizationToUpdate.ongkir); checkNumber(realizationToUpdate.ongkir, 3)" [options]="{ prefix: 'Rp ', thousands: '.', precision: '0' }" class="form-control" placeholder="Delivery Cost" [ngModelOptions]="{standalone:true}" required>
+		</mat-form-field>
+		<mat-form-field class="full-width">
+		<input currencyMask matInput [(ngModel)]="realizationToUpdate.totalprice" [options]="{ prefix: 'Rp ', thousands: '.', precision: '0' }" class="form-control" placeholder="Total Price" [ngModelOptions]="{standalone:true}" required disabled>
+		</mat-form-field>
+		<mat-form-field class="full-width">
+		<input type="text" matInput [(ngModel)]="realizationToUpdate.guarantee" class="form-control" placeholder="Guarantee" [ngModelOptions]="{standalone:true}">
+		</mat-form-field>
+	</div>
+	<h2>Note</h2>
+	<mat-form-field class="full-width">
+	<input type="text" matInput [(ngModel)]="realizationToUpdate.note" class="form-control" placeholder="Note" [ngModelOptions]="{standalone:true}">
+	</mat-form-field>
+	<div class="button">
+		<button mat-stroked-button routerLink="/realization-detail/{{ realizationToUpdate.submission_id }}">Back to list</button>
+		<button mat-stroked-button id="kiri" (click)="updateRealization(realizationToUpdate)">Update</button>
+	</div>
+</div>

@@ -1,0 +1,79 @@
+<div class='title'>
+	<h1>Realization Per Staff</h1>	
+</div>
+
+<!-- Table -->
+<div>
+	<!-- search -->
+	<mat-form-field>
+	<input type="text" matInput [(ngModel)]="searchdata" (keydown)="searchKeyDown($event,searchdata)" placeholder="Search">
+	</mat-form-field>
+	<mat-icon svgIcon="search" mat-button  (click)="doSearch(searchdata)" class="cpointer"></mat-icon>
+
+	<div class="submissionButton">
+		<button mat-stroked-button id="submissionProduct" routerLink="/realization-product">Realization Per Product</button>
+	</div>
+
+	<!-- list of Submissions -->
+	<table mat-table table [dataSource]="listOfRealization" class="mat-elevation-z8">
+		<!-- No Column -->
+		<ng-container matColumnDef="no">
+	    	<th mat-header-cell *matHeaderCellDef> No. </th>
+	    	<td mat-cell *matCellDef="let submission; let i = index"> {{ i+1 }} </td>
+	  	</ng-container>
+
+	  	<!--id Coumn -->
+		<ng-container matColumnDef="id" hidden="hidden">
+	    	<th mat-header-cell *matHeaderCellDef hidden="hidden"> id. </th>
+	    	<td mat-cell *matCellDef="let submission" hidden="hidden"> {{submission.id}} </td>
+	  	</ng-container>
+
+  		<!-- Subject date Column -->
+		<ng-container matColumnDef="subject">
+			<th mat-header-cell  *matHeaderCellDef> Subject </th>
+			<td mat-cell *matCellDef="let submission"> {{submission.subject}} </td>
+		</ng-container>
+
+		  <!-- Submission date Column -->
+		  <ng-container matColumnDef="submission_date">
+		    <th mat-header-cell  *matHeaderCellDef> Submission Date </th>
+		    <td mat-cell *matCellDef="let submission"> {{submission.submission_date | date:'longDate'}} </td>
+		  </ng-container>
+
+		  <!-- staff name Column -->
+		  <ng-container matColumnDef="staff_name">
+		    <th mat-header-cell  *matHeaderCellDef> Staff Name </th>
+		    <td mat-cell *matCellDef="let submission"> {{submission.staff_name}} </td>
+		  </ng-container>
+
+		  <!-- implementation date Column -->
+		  <ng-container matColumnDef="implementation_date">
+		    <th mat-header-cell *matHeaderCellDef> Implementation Date </th>
+		    <td mat-cell *matCellDef="let submission"> {{submission.implementation_target | date:'longDate'}} </td>
+		  </ng-container>
+
+		  <!-- purchase date Column -->
+		  <ng-container matColumnDef="purchase_date">
+		    <th mat-header-cell *matHeaderCellDef> Purchase Date </th>
+		    <td mat-cell *matCellDef="let submission"> {{submission.purchase_target | date:'longDate'}} </td>
+		  </ng-container>
+
+		  <!-- Actions Column -->
+		  <ng-container matColumnDef="action">
+		    <th mat-header-cell *matHeaderCellDef> Action </th>
+		    <td mat-cell *matCellDef="let submission">
+		    	<mat-select placeholder="Select an action">
+		    		<mat-option [value]="editRealization" routerLink="/realization-detail/{{ submission.id }}">Detail</mat-option>
+        			<mat-option [value]="Delete" (click)="openDialog( submission.id )">Delete</mat-option>
+		    	</mat-select>
+		    </td>
+		  </ng-container>
+
+		  <tr mat-header-row *matHeaderRowDef="displayedColumnsStaff"></tr>
+		  <tr mat-row *matRowDef="let row; columns: displayedColumnsStaff;"></tr>
+
+		  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+	</table>
+	<mat-paginator  [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" (page) = "changePage($event)" >
+	</mat-paginator>
+</div>

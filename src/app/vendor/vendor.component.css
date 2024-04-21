@@ -1,0 +1,11 @@
+table {
+  width: 100%;
+}
+
+#idVendor{
+	visibility: hidden;
+}
+
+.title{
+	font-family: "calibri";
+}

@@ -1,0 +1,161 @@
+<!-- save components -->
+<div [hidden]="save">
+	<div class="title">
+		<h1>Add New Plafons</h1>
+	</div>
+	<div>
+		<!-- Input Divisi  -->
+		<div class="container">
+			<mat-form-field>
+			  <mat-select placeholder="Select Division">
+			    <mat-option *ngFor="let division of divisions" [value]='division.id' (click)="saveValue(1, division.id)">
+			      {{division.name}}
+			    </mat-option>
+			  </mat-select>
+			</mat-form-field>
+		</div>
+		<!-- Input City  -->
+		<div class="container">
+			<mat-form-field>
+			  <mat-select placeholder="Select City">
+			    <mat-option *ngFor="let city of cities" [value]='city.value' (click)="saveValue(3, city.value)">
+			      {{city.viewValue}}
+			    </mat-option>
+			  </mat-select>
+			</mat-form-field>
+		</div>
+
+		<!-- Select Quarter -->
+		<div class="container">
+			<mat-form-field>
+			  <mat-select placeholder="Select Quarter">
+			    <mat-option *ngFor="let quarter of quarters" [value]='quarter.value' (click)="saveValue(2, quarter.value)">
+			      {{quarter.viewValue}}
+			    </mat-option>
+			  </mat-select>
+			</mat-form-field>
+		</div>
+
+		<!-- select year -->
+			<!-- <input matInput [matDatepicker]="picker" [(ngModel)]="plafons.year" placeholder="Select Year" #submitDate="ngModel">
+			<mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>
+			<mat-datepicker #picker 
+				startView="multi-year"
+				(yearSelected)="saveYear($event, picker)">
+			</mat-datepicker> -->
+		<div class="container">
+			<mat-form-field>
+			<mat-select placeholder="Select Year">
+			    <mat-option *ngFor="let year of years" [value]='year.values' (click)="saveValue(4, year.values)">
+			      {{year.viewValue}}
+			    </mat-option>
+			 </mat-select>
+
+			</mat-form-field>
+		</div>
+
+		<!-- Input Budget Limit -->
+		<div class="container">
+			<mat-form-field>
+			<input currencyMask matInput [(ngModel)]="plafons.budget_limit" name="budget" id = "budget"
+			class="full-width" placeholder="Budget Limit" required  (keypress)="numCheck($event)" [options]="{ prefix: 'Rp ', thousands: '.', precision: '0' }">
+			</mat-form-field>
+		</div>
+
+		<!-- buttons -->
+		<div>	
+			<button mat-stroked-button class='kiri' (click)='addNewPlafons()'>Add</button>
+			<!-- <button mat-stroked-button id="clear" (click)='clearSave()'>Clear</button> -->
+			<button mat-stroked-button color="warn" (click)='cancel()'>Cancel</button>
+		</div>
+	</div>
+</div>
+
+<!-- update components -->
+<div [hidden]="update">
+	<div class="title">
+		<h1>Update Plafons</h1>
+	</div>
+	<div>
+		<!-- Input Divisi  -->
+		<div class="container">
+			<mat-form-field>
+				<input class="full-width" matInput type="text" [(ngModel)]="oldPlafon.division_name" name="division" 
+						[matAutocomplete]="division" placeholder="Select Division"/>
+				<mat-autocomplete #division="matAutocomplete">
+					<mat-option *ngFor="let division of divisions" [value]='division.name'  (click)="updateValue(1, division.id)">
+				      {{division.name}}
+				    </mat-option>
+				</mat-autocomplete>
+			</mat-form-field>
+		</div>
+		<!-- Input City  -->
+		<div class="container">
+			<mat-form-field>
+				<input class="full-width" matInput type="text" [(ngModel)]="oldPlafon.city" name="city" 
+						[matAutocomplete]="City" placeholder="Select City"/>
+				<mat-autocomplete #City="matAutocomplete">
+					<mat-option *ngFor="let city of cities" [value]='city.viewValue' (click)="updateValue(3, city.value)">
+				      {{city.viewValue}}
+				    </mat-option>
+				</mat-autocomplete>
+			</mat-form-field>
+		</div>
+
+		<!-- Select Quarter -->
+		<div class="container">
+			<mat-form-field>
+				<input class="full-width" matInput type="text" [(ngModel)]="oldPlafon.quarter_name" name="quarter" 
+					[matAutocomplete]="quarter" placeholder="Select Quarter"/>
+				<mat-autocomplete #quarter="matAutocomplete">
+					<mat-option *ngFor="let quarter of quarters" [value]='quarter.viewValue' (click)="updateValue(2, quarter.value)">
+			      {{quarter.viewValue}}
+			    </mat-option>
+				</mat-autocomplete>
+			</mat-form-field>
+		</div>
+
+		<!-- select year -->
+			<!-- <input matInput [matDatepicker]="picker" [(ngModel)]="plafons.year" placeholder="Select Year" #submitDate="ngModel">
+			<mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>
+			<mat-datepicker #picker 
+				startView="multi-year"
+				(yearSelected)="saveYear($event, picker)">
+			</mat-datepicker> -->
+		<div class="container">
+			<mat-form-field>
+			 <input class="full-width" matInput type="text" [(ngModel)]="oldPlafon.year" name="year" 
+					[matAutocomplete]="year" placeholder="Select Year"/>
+			<mat-autocomplete #year="matAutocomplete">
+				<mat-option *ngFor="let year of years" [value]='year.viewValue' (click)="updateValue(4, year.values)">
+			      {{year.viewValue}}
+			    </mat-option>
+			</mat-autocomplete>
+			</mat-form-field>
+		</div>
+
+		<!-- Input Budget Limit -->
+		<div class="container">
+			<mat-form-field>
+			<input currencyMask matInput [(ngModel)]="oldPlafon.budget_limit" name="budget" id = "budget"
+			class="full-width" placeholder="Budget Limit" required  (keypress)="numCheck($event)" [options]="{ prefix: 'Rp ', thousands: '.', precision: '0' }">
+			</mat-form-field>
+		</div>
+		<!-- buttons -->
+		<div>	
+			<button mat-stroked-button class='kiri' (click)='updatePlafon()'>Update</button>
+			<!-- <button mat-stroked-button id="clear" (click)='clearSave()'>Clear</button> -->
+			<button mat-stroked-button color="warn" (click)='cancel()'>Cancel</button>
+		</div>
+	</div>
+</div>
+
+<!-- delete component -->
+<div [hidden]="deletePlafon">
+	<h2 mat-dialog-title>Delete This Plafon?</h2>
+	<mat-dialog-content>Are you sure?</mat-dialog-content>
+	<mat-dialog-actions>
+	  <button mat-button (click)="onNoClick()">No</button>
+	  <button mat-button color="warn" (click)="onYesClick()">Yes</button>
+	</mat-dialog-actions>
+</div>

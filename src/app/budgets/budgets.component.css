@@ -1,0 +1,17 @@
+.spacefiller{
+    flex: 1 1 auto;
+}
+.budgetused{
+    margin-right: 2px;
+    text-align: right;
+}
+.budgetlimit{
+    width: 100;
+}
+.ori{
+    width:20px;
+    background-color: aqua;
+}
+.kawe{
+    padding:0px 10px 0 10px;
+}

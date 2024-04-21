@@ -1,0 +1,21 @@
+.mat-card{
+	padding-top: 0;
+}
+
+.profile-card{
+    width: 300px;
+}
+
+.xxx{
+	margin-left: 38%;
+}
+
+button{
+	display: inline-block;
+	width: 50%;
+	text-align: center;
+}
+
+.mat-stroked-button{
+    width: 39%;
+}

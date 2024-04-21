@@ -1,0 +1,64 @@
+<form class="example-form">
+    <mat-form-field class="example-full-width">
+      <mat-label>Subject</mat-label>
+      <input class="full-width" matInput type="text" id="newAttributPartNumber" [(ngModel)]="detail.subject" name="newAttributeCode" placeholder="Subject" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Purchase Target Date</mat-label>
+      <input matInput [matDatepicker]="targetdate"  [(ngModel)]="detail.purchase_target" name="purchase_target" [formControl]="date" (dateChange)="purchaseTarget($event)">
+      <mat-datepicker-toggle matSuffix [for]="targetdate"></mat-datepicker-toggle>
+      <mat-datepicker #targetdate></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Implementation date</mat-label>
+      <input matInput [matDatepicker]="implementationdate" [(ngModel)]="detail.implementation_target" name="implementation_target" [formControl]="serializedDate" (keyup)="changeFocus($event, purch)"  (dateChange)="implementationTarget($event)">
+      <mat-datepicker-toggle matSuffix [for]="implementationdate"></mat-datepicker-toggle>
+      <mat-datepicker #implementationdate></mat-datepicker>
+    </mat-form-field>
+  
+    <mat-form-field class="example-full-width">
+      <mat-select [(ngModel)]="detail.product_id" id="product_id" name="product_id" class="full-width"  placeholder="itemName">
+        <mat-option *ngFor="let product of products" [value]="product.id"(click)="changeProduct(product)">{{product.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  
+  
+    <mat-form-field>
+      <mat-label>Part Number</mat-label>
+      <input matInput placeholder="Part Number" [(ngModel)]="detail.partnumber" name="partnumber">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Brand</mat-label>
+      <input matInput placeholder="Brand" [(ngModel)]="detail.brand" name="brand">
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>Purchase reason</mat-label>
+      <textarea matInput placeholder="Purchase Reason..." [(ngModel)]="detail.purchase_reason" name="purchase_reason"></textarea>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>Amount</mat-label>
+      <textarea matInput type='number' [(ngModel)]='detail.amount' placeholder="Amount..." name="amount"></textarea>
+    </mat-form-field>
+      
+    <mat-form-field class="example-full-width">
+      <mat-label>Description</mat-label>
+      <textarea matInput [(ngModel)]='detail.description' placeholder="Description..." name="description"></textarea>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select [(ngModel)]="detail.placement_location" id="placement_location" name="placement_location" class="full-width"  placeholder="Placement Location">
+        <mat-option *ngFor="let city of cities" [value]="city.id">{{city.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+      
+    <mat-form-field class="example-full-width">
+        <mat-label>No. PO</mat-label>
+        <textarea matInput placeholder="Nomor PO..." [(ngModel)]="detail.nopo" name="nopo"></textarea>
+    </mat-form-field>
+      
+  </form>
+  <input  type="file" (change)="uploadFile($event)" id="uplComponent" style="display:none" >
+  <button mat-button (click)="showInputDialog()" style="display: none">Upload PO</button>
+  <img mat-card-image  alt="" id="scanPOImage" width="120px"  (click)="showInputDialog()">
+  <div class="example-button-row">
+  <button mat-button color="primary" (click)="updateSubmission(detail)">Update</button>
+  </div>

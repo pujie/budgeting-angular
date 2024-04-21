@@ -1,0 +1,41 @@
+<div class="title">
+  <h1>Add New Product</h1>
+</div>
+<div>
+	<!-- choose category -->
+	<div>
+	<br>
+	 <mat-select [(ngModel)]="obj.category_id" placeholder="Choose Category">
+	  	<mat-option *ngFor="let cat of cats" [value]="cat.id">{{cat.name}}</mat-option>
+	 </mat-select>
+	</div>
+
+	<!-- input fields -->
+	<mat-form-field class="full-width">
+	<input type="text" matInput [(ngModel)]="obj.name" placeholder="Product Name" [ngModelOptions]="{standalone:true}" required>
+	</mat-form-field>
+
+	<mat-form-field class="full-width">
+	<input type="text" matInput [(ngModel)]="obj.partnumber" placeholder="Part Number" [ngModelOptions]="{standalone:true}">
+	</mat-form-field>
+
+	<mat-form-field class="full-width">
+	<input type="text" matInput [(ngModel)]="obj.unit" placeholder="Unit" [ngModelOptions]="{standalone:true}" required>
+	</mat-form-field>
+
+	<!-- buttons -->
+	<div>
+		<div class='button'>
+			<button mat-stroked-button class='kiri' (click)="_saveProduct(obj)" [disabled]="noSaveAllowed">Save</button>
+			<button mat-stroked-button color="warn" (click)="clearInput()">Clear</button>
+		</div>
+		<div class='button'>
+			<div [hidden]='backButton'>
+				<button mat-stroked-button class='kanan' routerLink="/vendor-detail/{{ vend.vendor_id }}">Back to vendor</button>
+			</div>
+		</div>
+		<div class='button'>
+			<button mat-stroked-button class='kanan' routerLink="/product">Back to product list</button>
+		</div>
+	</div>
+</div>	

@@ -1,0 +1,22 @@
+.body{
+	margin: 0 40%;
+}
+
+.full-width{
+    width: 100%
+}
+
+.title{
+	font-family: "calibri";
+}
+
+.loginbtn{
+	float: right;
+}
+
+.correct{
+	width: 65%;
+	padding: 3%;
+	background-color: red;
+	color: white;
+}

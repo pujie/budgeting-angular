@@ -1,0 +1,36 @@
+.title{
+	margin: auto;
+	font-family: 'calibri'
+}
+.table-filter{
+	margin-right: 2 px;
+}
+.filter{
+	display: inline-block;
+}
+.table-platfon{
+	border: 1px solid black;
+	text-align: center;	
+}
+#print{
+	float: right;
+	margin-top: 15px;
+}
+
+.half-width{
+	width: 50%;
+	margin-right: 10px;
+}
+.half-width button{
+	margin-left: 10px;
+}
+a{
+	text-decoration: underline;
+	color: blue;
+}
+.hidden{
+	visibility: hidden;
+}
+.shown{
+	visibility: visible;
+}

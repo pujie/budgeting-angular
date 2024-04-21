@@ -1,0 +1,55 @@
+<div [hidden]='!vendorPembanding'>
+	<div [hidden]="!canApprove">
+	<h2 mat-dialog-title>{{action}} this submission?</h2>
+	<mat-dialog-content>
+		<div [hidden]="!reject">
+			<div class="container">
+				<mat-form-field>
+				<input type="text" matInput [(ngModel)]="reason" name="reason" id = "reason"
+				class="full-width" placeholder="Reason" required >
+				</mat-form-field>
+			</div>
+		</div>
+		Are you sure?
+	</mat-dialog-content>
+		<mat-dialog-actions>
+		  <button mat-button (click)="onNoClick()">No</button>
+		  <button mat-button color="warn" (click)="onYesClick(data)">Yes</button>
+		</mat-dialog-actions>
+	</div>
+	<div [hidden]="canApprove">
+		<h2 mat-dialog-title>You Cant Approve This Submissions!</h2>
+	</div>
+</div>
+<div [hidden]='vendorPembanding'>
+	<h1>Vendor Comparison</h1>
+	<p>Vendor</p>
+	<mat-form-field>
+		<mat-select class="full-width" [(ngModel)]="pembanding.vendorName">
+			<mat-option *ngFor="let vendor of listOfVendors" [value]='vendor.name' (click)='addValue(vendor.id, vendor.name)'>
+				{{vendor.name}}
+			</mat-option>
+		</mat-select>
+	</mat-form-field>
+	<!-- Input Dpp / price -->
+	<mat-form-field class="full-width">
+		<input currencyMask matInput [(ngModel)]="pembanding.price" id="dpp" placeholder="DPP / Harga Item" (keyup)="getPPn()"  [options]="{ prefix: 'Rp ', thousands: '.', precision: '0' }">
+	</mat-form-field>
+	<!-- Input PPN -->
+	<mat-form-field class="full-width">
+		<input currencyMask matInput [(ngModel)]="pembanding.ppn" id="ppn" placeholder="PPN"  (keyup)="adjustTotal()" [options]="{ prefix: 'Rp ', thousands: '.', precision: '0' }" (keypress)="numCheck($event)">
+	</mat-form-field>
+	<!-- Input Ongkir -->
+	<mat-form-field class="full-width">
+		<input currencyMask matInput [(ngModel)]="pembanding.ongkir" id="ongkir" placeholder="Ongkos Kirim" [options]="{ prefix: 'Rp ', thousands: '.', precision: '0' }">
+	</mat-form-field>
+	<mat-form-field class="full-width">
+		<input matInput [(ngModel)]="pembanding.amount" numeric numericType="number"  id="amount" placeholder="Jumlah" >
+	</mat-form-field>
+	<mat-form-field class="full-width">
+		<input currencyMask matInput [(ngModel)]="pembanding.total" id="total" placeholder="Total" [options]="{ prefix: 'Rp ', thousands: '.', precision: '0' }">
+	</mat-form-field>
+
+	<button mat-button (click)="addVendor()" [disabled]="pembanding.price==0">Add Vendor Comparison</button>
+	<button mat-button color="warn" (click)="onNoClick()">Cancel</button>
+</div>

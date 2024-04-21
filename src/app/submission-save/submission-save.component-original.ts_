@@ -1,0 +1,567 @@
+import { Component, OnInit, Inject } from '@angular/core';
+import { AuthService } from '../auth.service';
+import { SubmissionService } from '../submission.service';
+import { ProductService } from '../product.service';
+import { CategoryService } from '../category.service';
+import { ProductvendorService } from '../productvendor.service';
+import { VendorService } from '../vendor.service';
+import { Router } from '@angular/router';
+import { DatePipe, CurrencyPipe } from '@angular/common';
+import { FormControl, Validators, AbstractControl, Validator, ValidatorFn  } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material'
+import { CurrencyMaskModule } from "ng2-currency-mask";
+
+export interface DialogData {
+  id: Number;
+  user: String;
+}
+
+@Component({
+  selector: 'app-submission-save',
+  templateUrl: './submission-save.component.html',
+  styleUrls: ['./submission-save.component.css']
+})
+export class SubmissionSaveComponent implements OnInit {
+
+  //variables for details table
+  currentDate = new Date(); //today's date by the system
+  displayedColumns: string[] = ['itemname', 'partnumber', 'brand', 'proposed_vendor',
+    'proposed_price', 'amount', 'discount_level', 'proposed_totalprice', 'description'];
+  fieldArray = [];
+  newAttribute: any = {}
+  totalprice: number
+  discountprice: number
+  listOfVendors;
+  listOfProducts;
+  listOfCategories;
+  addNewVendorOption = true
+  productOption = true
+  options: Array<string> = [];
+  currentProduct;
+  currentVendor;
+  vendors;
+  filteredOptions: Observable<string[]>;
+
+  //no budgeting generator
+  allSubmissions;
+  newestSubmissionId=-1;
+
+  noBudgeting="";
+  ctrNoBudgeting=0
+
+	//Variable for table submissions
+	submission = {
+		submission_date: this.currentDate,
+		staff_name:'',
+    subject: '',
+		implementation_target: null,
+		purchase_target: null,
+    budgeting_number: '',
+		createuser:''
+	}
+
+	//Variable for table submission details
+	submissionDetails = {
+		submission_id:'',
+		product_id:'',
+		vendor_id:'',
+		itemname:'',
+		brand:'',
+		partnumber:'',
+		description:'',
+		proposed_vendor:'',
+		amount:'',
+		proposed_price:'',
+		proposed_totalprice:'',
+		information:"",
+		purchase_reason:'',
+		placement_location:'',
+    discountlevel: 0,
+    guarantee: '',
+    note: '',
+		createuser:'',
+    ppn:0,
+    ongkir:0,
+    createdate:''
+	}
+
+  logindata;
+  
+
+  constructor(
+  	private submissionService: SubmissionService,
+    private productService: ProductService,
+    private vendorService: VendorService,
+    private productvendorService: ProductvendorService,
+    private categoryService: CategoryService,
+  	private router: Router,
+  	private auth: AuthService,
+    public dialog: MatDialog,
+  	public datepipe: DatePipe,
+    public curPipe: CurrencyPipe
+  ) {
+
+    //check login
+  	this.auth.isLogin(result => {
+      this.logindata = result
+      if (this.logindata.name=="JsonWebTokenError" || this.logindata.name=="TokenExpiredError") {
+        this.router.navigate([  '/login']);
+      }else{
+    	//add default value to inputs
+    	this.submission.createuser	= this.logindata.name
+    	this.submission.staff_name = this.logindata.name
+    	this.submissionDetails.createuser = this.logindata.name
+      }
+    });
+
+    this.categoryService.getCategories(result => {
+      this.listOfCategories = result
+      this.productOption = false
+    })
+    
+    this.submissionService.getSubmissions(result => {
+      this.allSubmissions = result
+      console.log(this.allSubmissions)
+      for (var i = 0; i < this.allSubmissions.length; i++) {
+         console.log(this.datepipe.transform(this.currentDate, 'yyyyMM'))
+         console.log(this.datepipe.transform(this.allSubmissions[i].createdate, 'yyyyMM'))
+        if (this.datepipe.transform(this.currentDate, 'yyyyMM')==this.datepipe.transform(this.allSubmissions[i].createdate, 'yyyyMM')){
+          this.ctrNoBudgeting++;
+        }
+      }
+
+      this.noBudgeting=this.datepipe.transform(this.currentDate, 'yyyyMM/')+"BUD/"+(this.ctrNoBudgeting+1)
+    })
+ }
+
+  //Functions
+  //clear all inputs
+  clearInput(){
+  	this.submission.staff_name=this.logindata.name;
+  	this.submission.implementation_target=null;
+  	this.submission.purchase_target=null;
+    this.submissionDetails.information = '';
+    this.submissionDetails.purchase_reason = '';
+    this.submissionDetails.placement_location = '';
+  	alert("Input values has been reset!")
+  }
+
+  cancel(){
+    //location.back();
+  }
+
+  //save submission into table submissions in database
+  saveSubmission(submission, callback){
+  	//change all date format into YYYY-MM-DD format in String
+  	submission.submission_date = this.datepipe.transform(submission.submission_date, 'yyyy-MM-dd')
+  	submission.implementation_target = this.datepipe.transform(submission.implementation_target, 'yyyy-MM-dd')
+  	submission.purchase_target = this.datepipe.transform(submission.purchase_target, 'yyyy-MM-dd')  	
+    submission.budgeting_number = this.noBudgeting
+
+  	if(this.submission.staff_name != '' && this.submission.implementation_target != '' && this.submission.purchase_target != '' && this.submission.implementation_target != null && this.submission.purchase_target != null){
+  		this.submissionService.saveSubmission(submission, result => {
+  			console.log('result', result)
+        callback(result)
+  		})
+  	}else{
+  		alert("Missing input value, please input value first!");
+      	console.log("Error! missing value")
+  	}
+  }
+
+  _saveSubmission(submission){
+    this.saveSubmission(submission, result => {
+      this.saveSubmissionDetails(result.insertId)
+    })
+  }
+
+  saveSubmissionDetails(submission_id){
+    var validated = true
+    for(let field of this.fieldArray){
+      if(field.description == null){
+        field.description = " "
+      }
+      this.submissionDetails.submission_id = submission_id
+      this.submissionDetails.product_id = field.productId
+      this.submissionDetails.vendor_id = field.vendor_id
+      this.submissionDetails.itemname =  field.item
+      this.submissionDetails.brand = field.brand
+      this.submissionDetails.partnumber = field.partnumber
+      this.submissionDetails.description = field.description
+      this.submissionDetails.proposed_vendor = field.proposed_vendor
+      this.submissionDetails.amount = field.amount
+      this.submissionDetails.proposed_price = field.proposed_price
+      this.submissionDetails.discountlevel = field.discountlevel
+      this.submissionDetails.proposed_totalprice = field.proposed_totalprice
+      this.submissionDetails.information = " "
+      this.submissionDetails.purchase_reason = field.purchase_reason
+      this.submissionDetails.placement_location = field.placement_location
+      this.submissionDetails.ppn = 0
+      this.submissionDetails.ongkir = 0
+
+      this.submissionService.saveSubmissionDetail(this.submissionDetails, result =>{
+        if (result != null) {
+          console.log('result submission details', result)
+          this.productService.updatePrice({
+            vendor_id:field.vendor_id,
+            product_id:field.productId,
+            price:field.proposed_price
+          },result => {
+            console.log("Result",result)
+          })
+        }else{
+          validated = false;
+        }
+      })
+      console.log('subs details', this.submissionDetails)
+    }
+    if(!validated){
+      alert("Submission not saved")
+    }else{
+      alert("Submission Saved")
+    this.router.navigate(['/summary']) 
+    } 
+  }
+
+  deleteFieldValue(index) {
+    this.fieldArray.splice(index, 1);
+  }
+
+  changeFocus(event, newFocus){
+    if(event.key === "Enter"){
+      newFocus.focus();
+    }
+  }
+
+  numCheck(event: any) {
+    const pattern = /[0-9\ ]/;
+
+    let inputChar = String.fromCharCode(event.charCode);
+    if (event.keyCode != 8 && !pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
+
+  ngOnInit() {
+  }
+
+  addDetail(){
+    const dialogRef = this.dialog.open(SubmissionDetailDialog, {
+    width: '1000px', 
+    data: {user: this.logindata.name}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result != null){
+        alert("Detail saved")
+        console.log('Detail Result',result)
+        this.fieldArray.push(result)
+      }else{
+        alert("Detail not saved, please input again")
+      }
+    })
+  }
+
+}
+
+//component for add new product detail into submission detail table dialog
+@Component({
+  selector: 'app-submission-save',
+  templateUrl: 'submission-save-detail-dialog.html',
+  styleUrls: ['./submission-save.component.css']
+})
+
+export class SubmissionDetailDialog {
+
+  newAttribute: any = {
+    amount : 1,
+    proposed_price:0,
+    discountlevel:0,
+    proposed_totalprice:0
+  }
+  listOfProducts
+  currentProduct
+  listOfVendors
+  nonFilteredProducts;
+  addNewVendorOption=true
+  listOfCategories
+  productOption = true
+  logindata
+  discount
+  totalPrice = 0
+  percentDiscount
+  tempNumber=0
+
+  placementLocation=["Jakarta", "Surabaya", "Bali", "Malang"]
+
+  constructor(
+    private vendorService:VendorService,
+    private productvendorService: ProductvendorService,
+    private productService: ProductService,
+    private categoryService: CategoryService,
+    public dialog: MatDialog,
+    public dialogRef: MatDialogRef<SubmissionDetailDialog>, 
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,    
+  ) {
+      this.logindata=data.user
+
+      this.categoryService.getCategories(result => {
+        this.listOfCategories = result
+        this.productOption = false
+      })
+    }
+
+    cancel(){
+      this.dialogRef.close();
+    }
+
+    getCategoryProducts(categoryId){
+      this.newAttribute.item=""
+      this.newAttribute.partnumber=""
+      this.productService.getProductByCategory({category_id: categoryId}, result => {
+        this.listOfProducts = result
+        this.nonFilteredProducts = result
+      })
+    }
+
+    filter(productName){
+      var filteredProduct = []
+      if(productName == ''){
+        this.listOfProducts = this.nonFilteredProducts
+      }else{
+        for(let index in this.nonFilteredProducts){
+          if(this.nonFilteredProducts[index].name.toLowerCase().includes(productName.toLowerCase())){
+            filteredProduct.push(this.nonFilteredProducts[index])
+          }
+
+          if(parseInt(index) == this.nonFilteredProducts.length-1){
+            this.listOfProducts = filteredProduct
+          }
+        }
+      }
+    }
+
+    autoFill(productName){
+      for (let product of this.listOfProducts){
+        if(product.name === productName){
+          this.currentProduct = product
+        }
+      }
+      this.newAttribute.partnumber = this.currentProduct.partnumber
+      this.newAttribute.productId = this.currentProduct.id
+      this.newAttribute.proposed_vendor = ''
+
+      //fill the option for proposed vendor
+      this.productvendorService.getVendorByProduct({product_id: this.currentProduct.id}, result =>{
+        this.listOfVendors = result
+      })
+
+      this.newAttribute.amount = 1
+      this.newAttribute.discountlevel = 0  
+      this.addNewVendorOption = false
+    }
+
+    setVendorId(vendorName){
+      for(let vendor of this.listOfVendors){
+        if(vendor.name == vendorName){
+          this.newAttribute.vendor_id = vendor.id
+          this.newAttribute.proposed_vendor = vendor.name
+        }
+      }
+    }
+    calculateTotal(){
+      let _xfactor = this.newAttribute.proposed_price*this.newAttribute.amount*this.newAttribute.discountlevel/100
+      console.log("xfactor",_xfactor)
+      this.newAttribute.proposed_totalprice = this.newAttribute.proposed_price*this.newAttribute.amount-_xfactor
+      console.log("tot",this.newAttribute.proposed_price*this.newAttribute.amount-_xfactor)
+    }
+    calculateDiscount(){
+      let _total = (this.newAttribute.proposed_price*this.newAttribute.amount)
+      console.log("_total",_total)
+      this.newAttribute.discountlevel = 100*((_total - this.newAttribute.proposed_totalprice)/_total)
+      console.log("total-fact",_total - this.newAttribute.proposed_totalprice)
+    }
+    calculateDiscountx(amount, price, totalprice){
+
+      console.log('calculatediscount invoked',this.newAttribute.amount,this.newAttribute.proposed_price,this.newAttribute.proposed_totalprice)
+      if(price == undefined || amount == undefined || totalprice == undefined || (price == 0 && totalprice == 0)){
+        this.percentDiscount = 0
+        console.log("A",this.percentDiscount)
+      }else{
+        this.discount=(totalprice-(price*amount))
+        console.log("Discount",this.discount)
+        this.percentDiscount=this.discount/(price*amount)*(-100)
+        console.log("B, percentDiscount : ",this.percentDiscount)
+      }
+
+      if(price != undefined && amount != undefined){
+        this.totalPrice = parseInt(price)*parseInt(amount)
+        this.newAttribute.proposed_totalprice = this.totalPrice
+        console.log('calculate total price',price,amount,this.totalPrice)
+        console.log("C",this.percentDiscount)
+      }
+
+      if (this.percentDiscount<0) {
+        this.newAttribute.discountlevel = 0
+        console.log("D",this.percentDiscount)
+      } else{
+        this.newAttribute.discountlevel = this.percentDiscount
+        console.log("E",this.percentDiscount)
+      }
+    }
+
+    checkAmount(amount){
+      if (amount<1) {
+        this.newAttribute.amount=1
+      }
+    }
+
+    numCheck(event: any) {
+      const pattern = /[0-9\ ]/;
+
+      let inputChar = String.fromCharCode(event.charCode);
+      if (event.keyCode != 8 && !pattern.test(inputChar)) {
+        event.preventDefault();
+      }
+    }
+
+    maxCheck(currentNumber, amount, maxLimit, event){
+      if(currentNumber>maxLimit*amount && event.keyCode != 8 && event.keyCode != 46){
+        this.newAttribute.proposed_totalprice=this.tempNumber
+        //this.calculateDiscount(amount, maxLimit, this.newAttribute.proposed_totalprice)
+        // event.preventDefault();
+      }else{
+        this.tempNumber=currentNumber
+        //this.calculateDiscount(amount, maxLimit, currentNumber)
+      }
+    }
+
+    openDialog(productId) {
+      const dialogRef = this.dialog.open(SubmissionVendorDialog, {
+      width: '750px', 
+      data: {id: productId, user: this.logindata.name}
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log("REsulte",result)
+        if(result != null){
+          this.listOfVendors.push(result)
+        }
+      })
+    }
+
+    addVendor() {
+      console.log("Vendor Should be updated")
+      this.dialogRef.close(this.newAttribute);
+    }
+}
+
+//Component for add new vendor to product dialog
+@Component({
+  selector: 'app-submission-save',
+  templateUrl: 'submission-save-dialog.html',
+  styleUrls: ['./submission-save.component.css']
+})
+
+export class SubmissionVendorDialog {
+
+  vend;
+  nonAssociatedVendors: Array<any> = [];
+  selectedVendor: Number;
+  productId: Number;
+  user: String;
+  AssociatedVendor;
+
+  constructor(
+    private vendorService:VendorService,
+    private productvendorService: ProductvendorService,
+    public dialogRef: MatDialogRef<SubmissionVendorDialog>, 
+    @Inject(MAT_DIALOG_DATA) public data: DialogData
+  ) {
+    this.productId = data.id
+    this.user = data.user
+    this.vend = {
+      name: '',
+      address:'',
+      phone: '',
+      bankaccount: ''
+    }
+
+    this.productvendorService.getVendorByProduct({product_id: this.productId}, result => {
+      this.getNonAssociatedVendors(result)
+    })
+  }
+
+  onCancelClick() {
+    this.dialogRef.close();
+  }
+
+  getNonAssociatedVendors(associatedVendors){
+    this.vendorService.getVendors(result => {
+        this.nonAssociatedVendors = result
+
+        if(associatedVendors != null){
+          for(let index in result){
+            for(let assocVendor of associatedVendors){
+              if(this.nonAssociatedVendors[index].id == assocVendor.id){
+                this.nonAssociatedVendors.splice(parseInt(index), 1)
+              }
+            }
+          }
+        }
+        console.log('result', this.nonAssociatedVendors)
+    })
+  }
+
+  onSaveClick(dataa: DialogData) {
+    this.vendorService.saveVendor(this.vend, result => {
+      this.vendorService.getVendors(result => {
+        for(let newVendor of result){
+          if(newVendor.name === this.vend.name){
+            this.AssociatedVendor = newVendor
+            this.productvendorService.associateProductVendor(
+              {
+                product_id: this.productId, vendor_id: newVendor.id, createuser: this.user
+              }, result =>{
+              alert('New Vendor Added !')
+              console.log("Result,result",result)
+              this.dialogRef.close(this.AssociatedVendor);  
+            })
+          }
+        }
+      })
+    })
+  }
+
+  onClearClick() {
+    this.vend.name = ''
+    this.vend.address = ''
+    this.vend.phone = ''
+    this.vend.bankaccount = ''
+  }
+
+  checkNewVendor(vendorID){
+    this.selectedVendor = vendorID
+    this.vendorService.getVendor({id: this.selectedVendor}, result => {
+        this.AssociatedVendor = result
+    })
+  }
+
+  addVendorToProduct(){
+    this.productvendorService.associateProductVendor({product_id: this.productId, vendor_id: this.selectedVendor, createuser: this.user}, result =>{
+      alert('Vendor Added !')
+    })
+    this.dialogRef.close(this.AssociatedVendor);
+  }
+
+  numCheck(event: any) {
+    const pattern = /[0-9\ ]/;
+
+    let inputChar = String.fromCharCode(event.charCode);
+    if (event.keyCode != 8 && !pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
+
+}

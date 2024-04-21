@@ -1,0 +1,19 @@
+<h1>Item Received</h1>
+<div class="example-container">
+  <mat-form-field>
+    <input matInput placeholder="Subject" value="{{item.subject}}">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Staff name" value="{{item.staff_name}}">
+  </mat-form-field>
+  <mat-form-field class="datepicker">
+    <input matInput type="datetime-local" placeholder="Received date" [(ngModel)]="arrivaldate" class="datepicker">
+  </mat-form-field>
+
+</div>
+<button (click)="showUploadDialog()" mat-button>Upload Receipt</button>
+<br>
+<img mat-card-image src="" alt="" id="profileImage" width="200px" >
+<input type="file" id="uploader"  (change)="uploadFile($event)" style="display:none"/>
+<br>
+<button mat-raised-button (click)="doAction()">Save</button>

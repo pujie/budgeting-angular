@@ -1,0 +1,7 @@
+  <mat-form-field class="example-full-width">
+    <mat-label>{{reasonLabel}}</mat-label>
+    <textarea name="rejectReason" id="" cols="30" rows="10" matInput [(ngModel)]="rejectReason">
+    </textarea>
+  </mat-form-field>
+  <button mat-raised-button color="warn" (click)="saveReject()">Save</button>
+  <button mat-raised-button color="primary" (click)="cancelReject()">Cancel</button>

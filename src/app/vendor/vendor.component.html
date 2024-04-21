@@ -1,0 +1,70 @@
+<div class="title">
+		<h1>Vendors List</h1>
+</div>
+
+<!-- search vendor -->
+<mat-form-field>
+	<input type="text" matInput [(ngModel)]="searchdata" (keydown)="searchKeyDown($event,searchdata)" placeholder="Search">
+</mat-form-field>
+<mat-icon svgIcon="search" mat-button  (click)="doSearch(searchdata)" class="cpointer"></mat-icon>
+<div>
+	<!-- Tabel list of vendor -->
+	<table mat-table table [dataSource]="listOfVendors" class="mat-elevation-z8">
+		<!-- No Column -->
+		<ng-container matColumnDef="no">
+	    	<th mat-header-cell *matHeaderCellDef> No. </th>
+	    	<td mat-cell *matCellDef="let vendor; let i = index"> {{ i+1 }} </td>
+	  	</ng-container>
+
+	  	<!--id Coumn -->
+		<ng-container matColumnDef="id" hidden="hidden">
+	    	<th mat-header-cell *matHeaderCellDef hidden="hidden"> id. </th>
+	    	<td mat-cell *matCellDef="let vendor" hidden="hidden"> {{vendor.id}} </td>
+	  	</ng-container>
+
+		  <!-- Nama Vendor Column -->
+		  <ng-container matColumnDef="name">
+		    <th mat-header-cell  *matHeaderCellDef> Vendor </th>
+		    <td mat-cell *matCellDef="let vendor"> {{vendor.name}} </td>
+		  </ng-container>
+
+		  <!-- Alamat Column -->
+		  <ng-container matColumnDef="address">
+		    <th mat-header-cell  *matHeaderCellDef> Address </th>
+		    <td mat-cell *matCellDef="let vendor"> {{vendor.address}} </td>
+		  </ng-container>
+
+		  <!-- No. Telp Column -->
+		  <ng-container matColumnDef="phone">
+		    <th mat-header-cell *matHeaderCellDef> Phone Number </th>
+		    <td mat-cell *matCellDef="let vendor"> {{vendor.phone}} </td>
+		  </ng-container>
+
+		  <ng-container matColumnDef="bank">
+		    <th mat-header-cell *matHeaderCellDef> Bank Account </th>
+		    <td mat-cell *matCellDef="let vendor"> {{vendor.bankaccount}} </td>
+		  </ng-container>
+
+		  <!-- Actions Column -->
+		  <ng-container matColumnDef="action">
+		    <th mat-header-cell *matHeaderCellDef> Action </th>
+		    <td mat-cell *matCellDef="let vendor">
+		    	<mat-select placeholder="Select an action">
+		    			<mat-option [value]="Details" routerLink="/vendor-detail/{{ vendor.id }}">View Detail </mat-option>
+						<mat-option [value]="Namecard" routerLink="/vendorimage/namecard/{{ vendor.id }}">Namecard</mat-option>
+						<mat-option [value]="Offeringsample" routerLink="/vendorimage/offeringsample/{{ vendor.id }}">Offering Sample</mat-option>
+						<mat-option [value]="Invoicesample" routerLink="/vendorimage/invoicesample/{{ vendor.id }}">Invoice Sample</mat-option>
+						<mat-option [value]="Receiptsample" routerLink="/vendorimage/receiptsample/{{ vendor.id }}">Receipt Sample</mat-option>
+		    		<mat-option [value]="Delete" (click)="openDialog(vendor.id)">Delete</mat-option>
+		    	</mat-select>
+		    </td>
+		  </ng-container>
+
+		  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+		  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+		  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+	</table>
+	<mat-paginator  [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" (page) = "changePage($event)" >
+	</mat-paginator>
+</div>

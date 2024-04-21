@@ -1,0 +1,326 @@
+<div class='title'>
+	<h1>{{submission_detail.itemname}}</h1>
+	<h2>Submission Detail</h2>
+</div>
+<div [hidden]='!normal'>
+<div class="kiri" >
+	<div class="atas">
+		<table class="mat-elevation-z1">
+			<tr>
+				<th>No. Budgeting</th>
+				<td>:</td>
+				<td>{{submisssion.budgeting_number}}</td>
+			</tr>
+			<tr>
+				<th>Implementation Target</th>
+				<td>:</td>
+				<td>{{submisssion.implementation_target | date:'longDate'}}</td>
+			</tr>
+			<tr>
+				<th>Purchase Target</th>
+				<td>:</td>
+				<td>{{submisssion.purchase_target | date:'longDate'}}</td>
+			</tr>
+			<tr>
+				<th>Name</th>
+				<td>:</td>
+				<td>{{submission_detail.itemname}}</td>
+			</tr>
+			<tr>
+				<th>Brand</th>
+				<td>:</td>
+				<td>{{submission_detail.brand}}</td>
+			</tr>
+			<tr>
+				<th>Part Number</th>
+				<td>:</td>
+				<td>{{submission_detail.partnumber}}</td>
+			</tr>
+			<tr>
+				<th>Description</th>
+				<td>:</td>
+				<td>{{submission_detail.description}}</td>
+			</tr>
+			<tr>
+				<th>Proposed Vendor</th>
+				<td>:</td>
+				<td>{{vendorName}}</td>
+			</tr>
+			<tr>
+				<th>Proposed Price</th>
+				<td>:</td>
+				<td>{{submission_detail.proposed_price| currency:'IDR':'symbol-narrow'}}</td>
+			</tr>
+			<tr>
+				<th>Amount</th>
+				<td>:</td>
+				<td>{{submission_detail.amount}}</td>
+			</tr>
+			<tr>
+				<th>Discount</th>
+				<td>:</td>
+				<td>{{discountPrice | currency:'IDR':'symbol-narrow'}}</td>
+			</tr>
+			<tr>
+				<th>Proposed Total Price</th>
+				<td>:</td>
+				<td>{{submission_detail.proposed_totalprice| currency:'IDR':'symbol-narrow'}}</td>
+			</tr>
+			<tr>
+				<th>Purchase Reazon</th>
+				<td>:</td>
+				<td>{{tmpPurchaseReason}} <div (click)="readMore()" id="shortenertext">{{shortenertext}}</div></td>
+			</tr>
+			<tr>
+				<th>Placement Location</th>
+				<td>:</td>
+				<td>{{submission_detail.placement_location}}</td>
+			</tr>
+		</table>
+	</div>
+</div>
+<div class="kanan" >
+	<div [hidden]='hidePlafon'>
+		<h2>Review Purchasing</h2>
+
+		<!-- versi tabel -->
+		<table id='tabel-vendor-pembanding'>
+			<thead>
+				<th>Vendor</th>
+				<th>DPP</th>
+				<th>Jml</th>
+				<th>PPN</th>
+				<th>Ongkos Kirim</th>
+				<th>SubTotal</th>
+				<th>Action</th>
+			</thead>
+			<tbody>
+				<tr *ngFor="let field of listOfComparisonVendors">
+					<td>
+						<div [hidden]='field.selected'>{{field.vendorName}}</div>
+						<div [hidden]='!field.selected'><div class="warning">{{field.vendorName}}</div></div>
+					</td>
+					<td class='nominal'>
+						<div [hidden]='field.selected'>{{field.price| currency:'IDR':'symbol-narrow'}}</div>
+						<div [hidden]='!field.selected'><div class="warning">{{field.price| currency:'IDR':'symbol-narrow'}}</div></div>
+					</td>
+					<td class='nominal'>
+						<div [hidden]='field.selected'>{{submission_detail.amount}}</div>
+						<div [hidden]='!field.selected'><div class="warning">{{submission_detail.amount}}</div></div>
+					</td>
+					<td class='nominal'>
+						<div [hidden]='field.selected'>{{field.ppn| currency:'IDR':'symbol-narrow'}}</div>
+						<div [hidden]='!field.selected'><div class="warning">{{field.ppn| currency:'IDR':'symbol-narrow'}}</div></div>
+					</td>
+					<td class='nominal'>
+						<div [hidden]='field.selected'>{{field.ongkir| currency:'IDR':'symbol-narrow'}}</div>
+						<div [hidden]='!field.selected'><div class="warning">{{field.ongkir| currency:'IDR':'symbol-narrow'}}</div></div>
+					</td>
+					<td class='nominal'>
+						<div [hidden]='field.selected'>{{submission_detail.amount * (field.price + field.ppn) + field.ongkir| currency:'IDR':'symbol-narrow'}}</div>
+						<div [hidden]='!field.selected'><div class="warning">{{submission_detail.amount * (field.price + field.ppn) + field.ongkir| currency:'IDR':'symbol-narrow'}}</div></div>
+					</td>
+					<td>
+						<div [hidden]='field.selected'>
+							<button mat-stroked-button type="button" (click)="selectVendor(field)">Select</button>
+						</div>
+						<div [hidden]='!field.selected'>
+							<div class="warning"><button mat-stroked-button type="button" (click)="unselectVendor()">Select</button></div>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+			
+
+		<h2>Plafond</h2>
+		<h3>Plafond Division Limit ({{userDivision}}): {{budget_limit | currency:'IDR':'symbol-narrow'}}</h3>
+		<table class="mat-elevation-z1">
+			<tr>
+				<th>Current Division Plafond(Before Approve)</th>
+				<td>:</td>
+				<td>{{current_budget | currency:'IDR':'symbol-narrow'}}</td>
+			</tr>
+			<tr [hidden]= 'warningLimit'>
+				<th>Estimated Current Division Plafond(After Approve)</th>
+				<td>:</td>
+				<td>{{budget_approve | currency:'IDR':'symbol-narrow'}}</td>
+			</tr>
+			<tr [hidden]= '!warningLimit'>
+				<th>Estimated Current Division Plafond(After Approve)</th>
+				<td>:</td>
+				<td class="warning"><b>{{budget_approve | currency:'IDR':'symbol-narrow'}}</b></td>
+			</tr>
+		</table>
+		<br>
+		<h3>Plafond City Limit ({{submission_detail.placement_location}}) : {{budget_limit_city | currency:'IDR':'symbol-narrow'}}</h3>
+		<table class="mat-elevation-z1">
+			<tr>
+				<th>Current City Plafond(Before Approve)</th>
+				<td>:</td>
+				<td>{{current_budget_city | currency:'IDR':'symbol-narrow'}}</td>
+			</tr>
+			<tr [hidden]= 'warningLimitCity'>
+				<th>Estimated Current City Plafond(After Approve)</th>
+				<td>:</td>
+				<td>{{budget_approve_city | currency:'IDR':'symbol-narrow'}}</td>
+			</tr>
+			<tr [hidden]= '!warningLimitCity'>
+				<th>Estimated Current City Plafond(After Approve)</th>
+				<td>:</td>
+				<td class="warning"><b>{{budget_approve_city | currency:'IDR':'symbol-narrow'}}</b></td>
+			</tr>
+		</table>
+		<br><br>
+		<button mat-button (click)="shownotes()">Show notes</button>
+		<br><br>
+		<div class='subbutton'>
+				<button mat-stroked-button (click)="openDialogProduct(submission_detail.id, 2)" [disabled]="cantApprove">Approve</button>
+				<button mat-stroked-button color="warn" class='button-right' (click)="openDialogProduct(submission_detail.id, 3)"[disabled]="cantReject">Reject</button>
+		</div>
+		<div class='back'>
+			<button mat-stroked-button class= 'kanan' (click)="edit(submission_detail.id)">Edit</button>
+			<button mat-stroked-button class= 'kanan' (click)="backToLastPage()">Back</button>
+		</div>
+	</div>
+
+	<div [hidden]="preapproval">
+		<h2>Review Purchasing</h2>
+
+		<button mat-stroked-button (click)="openDialogProduct(submission_detail.id, 4)">Add Vendor to compare</button>
+		<!-- versi tabel -->
+		<table id='tabel-vendor-pembanding'>
+			<thead>
+				<th>Vendor</th>
+				<th>DPP</th>
+				<th>Jml</th>
+				<th>PPN</th>
+				<th>Ongkir</th>
+				<th>Total</th>
+				<th>Action</th>
+			</thead>
+			<tbody>
+				<tr *ngFor="let field of listOfComparisonVendors">
+					<td>{{field.vendorName}}</td>
+					<td class='nominal'>{{field.price| currency:'IDR':'symbol-narrow'}}</td>
+					<td>{{submission_detail.amount}}</td>
+					<td class='nominal'>{{field.ppn| currency:'IDR':'symbol-narrow'}}</td>
+					<td class='nominal'>{{field.ongkir| currency:'IDR':'symbol-narrow'}}</td>
+					<td class='nominal'>{{(field.price*submission_detail.amount) + (field.ppn*submission_detail.amount) + field.ongkir| currency:'IDR':'symbol-narrow'}}</td>
+					<td><button mat-stroked-button color="warn"  type="button" (click)="deleteFieldValue(i,field.vendor_id)">Delete</button></td>
+				</tr>
+			</tbody>
+		</table>
+
+		<button mat-button (click)="shownotes()">Show notes</button>
+		<button mat-stroked-button id='left-button' (click)='addReview()' [disabled]='addReviewEnabled' >Add Review</button>
+		<button mat-stroked-button (click)="backToLastPage()">Back</button>
+	</div>
+
+	<div [hidden]='alreadyPreApproval'>
+		<h2>Review Purchasing </h2>
+
+		<!-- versi tabel -->
+		<table id='tabel-vendor-pembanding'>
+			<thead>
+				<th>Vendor</th>
+				<th>DPP</th>
+				<th>PPN</th>
+				<th>Ongkos Kirim</th>
+			</thead>
+			<tbody>
+				<tr *ngFor="let field of listOfComparisonVendors">
+					<td>{{field.vendorName}}</td>
+					<td class='nominal'>{{field.price*submission_detail.amount| currency:'IDR':'symbol-narrow'}}</td>
+					<td class='nominal'>{{field.ppn| currency:'IDR':'symbol-narrow'}}</td>
+					<td class='nominal'>{{field.ongkir| currency:'IDR':'symbol-narrow'}}</td>
+				</tr>
+			</tbody>
+		</table>
+		<button mat-button (click)="shownotes()">Show notes</button>
+		<h2>Done Pre-approval, waiting for managers approval</h2>
+		<button mat-stroked-button (click)="backToLastPage()">Back</button>
+		<button mat-stroked-button (click)="editPreApproval(submission_detail.submission_id)">Edit</button>
+	</div>
+
+</div>
+</div>
+<div [hidden]='normal'>
+	<div id="atas">
+		<table class="mat-elevation-z1">
+			<tr>
+				<th>No. Budgeting</th>
+				<td>:</td>
+				<td>{{submisssion.budgeting_number}}</td>
+			</tr>
+			<tr>
+				<th>Implementation Target</th>
+				<td>:</td>
+				<td>{{submisssion.implementation_target | date:'longDate'}}</td>
+			</tr>
+			<tr>
+				<th>Purchase Target</th>
+				<td>:</td>
+				<td>{{submisssion.purchase_target | date:'longDate'}}</td>
+			</tr>
+			<tr>
+				<th>Name</th>
+				<td>:</td>
+				<td>{{submission_detail.itemname}}</td>
+			</tr>
+			<tr>
+				<th>Brand</th>
+				<td>:</td>
+				<td>{{submission_detail.brand}}</td>
+			</tr>
+			<tr>
+				<th>Part Number</th>
+				<td>:</td>
+				<td>{{submission_detail.partnumber}}</td>
+			</tr>
+			<tr>
+				<th>Description</th>
+				<td>:</td>
+				<td>{{submission_detail.description}}</td>
+			</tr>
+			<tr>
+				<th>Proposed Vendor</th>
+				<td>:</td>
+				<td>{{vendorName}}</td>
+			</tr>
+			<tr>
+				<th>Proposed Price</th>
+				<td>:</td>
+				<td>{{submission_detail.proposed_price| currency:'IDR':'symbol-narrow'}}</td>
+			</tr>
+			<tr>
+				<th>Amount</th>
+				<td>:</td>
+				<td>{{submission_detail.amount}}</td>
+			</tr>
+			<tr>
+				<th>Discount</th>
+				<td>:</td>
+				<td>{{discountPrice | currency:'IDR':'symbol-narrow'}}</td>
+			</tr>
+			<tr>
+				<th>Proposed Total Price</th>
+				<td>:</td>
+				<td>{{submission_detail.proposed_totalprice| currency:'IDR':'symbol-narrow'}}</td>
+			</tr>
+			<tr>
+				<th>Purchase Reason</th>
+				<td>:</td>
+				<td>{{submission_detail.purchase_reason}}</td>
+			</tr>
+			<tr>
+				<th>Placement Location</th>
+				<td>:</td>
+				<td>{{submission_detail.placement_location}}</td>
+			</tr>
+		</table>
+	<button mat-stroked-button id="back-button-single" (click)="backToLastPage()">Back</button>
+	<button mat-stroked-button id="back-button-single" (click)="edit(submission_detail.id)">Edit</button>
+	<button mat-stroked-button class= 'kanan' (click)="resendMail()">Email Resend</button>
+	</div>
+</div>

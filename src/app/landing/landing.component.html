@@ -1,0 +1,150 @@
+<div class="title print-hidden">
+  <h1>Summary</h1>
+</div>
+<!-- table -->
+<div>
+	<!-- filter options -->
+	<div class="print-hidden">
+		<!-- filter by date min-max -->
+		<div>
+			<!-- minimum date -->
+			<div class="half-width filter-date">
+				<mat-form-field>
+					<input matInput [matDatepicker]="picker1" [max]="currentDate" [(ngModel)]="filterDate.minimum" id="minimum" placeholder="From Date" #implementation="ngModel" #dtminimum (dateChange)="showSelectedStatus()">
+					<mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+					<mat-datepicker #picker1 [startAt]="toDate"></mat-datepicker>
+				</mat-form-field>
+
+				<mat-form-field>
+					<input matInput [matDatepicker]="picker2" [max]="currentDate" [(ngModel)]="filterDate.maximum" id="maximum" placeholder="To Date" #implementation="ngModel" #dtmaximum (dateChange)="showSelectedStatus()">
+					<mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+					<mat-datepicker #picker2 [startAt]="toDate"></mat-datepicker>
+				</mat-form-field>
+
+				<button mat-stroked-button (click)='getFilteredDate()'>Search by date</button>
+			</div>
+
+		<div>
+			<!-- filter by status -->
+			<mat-form-field>
+			  <mat-select [(value)]="submissionStatus" placeholder="Filter by status" [(ngModel)]="submissionStatus">
+			  	<mat-option [value]=0 (click)="showSelectedStatus()">No Filter</mat-option>
+			    <mat-option *ngFor="let status of statuses" [value]='status.value' (click)="showSelectedStatus()">
+				    {{status.viewValue}}
+				</mat-option>
+			  </mat-select>		
+			</mat-form-field>
+
+			<!-- filter by division -->
+			<mat-form-field>
+				<mat-select placeholder="Filter by division" [(value)]="submissionDivision" [(ngModel)]="division_id">
+					<mat-option [value] = 0 (click)="showSelectedStatus()">No Filter</mat-option>
+					<mat-option *ngFor="let division of divisions" [value]='division.value' (click)="showSelectedStatus()">
+				      {{division.viewValue}}
+				    </mat-option>
+				</mat-select>	
+			</mat-form-field>
+			<mat-form-field>
+				<mat-select placeholder="Surabaya" [(ngModel)]="submissionBranch" (selectionChange)="showSelectedStatus()">
+					<mat-option value="0">No Filter</mat-option>
+					<mat-option value="1">Surabaya</mat-option>
+					<mat-option value="2">Jakarta</mat-option>
+					<mat-option value="3">Bali</mat-option>
+					<mat-option value="4">Malang</mat-option>
+				</mat-select>	
+			</mat-form-field>
+
+			<button mat-stroked-button id="print" (click)='printSummary()'>Print Summary</button>
+		</div>
+			
+		</div>
+	</div>
+	<br>
+	<!-- Submissions Table -->
+	<div>
+		<table mat-table table [dataSource]="detailsToDisplay" class="mat-elevation-z8">
+
+			<!-- No Column -->
+			<ng-container matColumnDef="no">
+		    	<th mat-header-cell *matHeaderCellDef> No. </th>
+		    	<td mat-cell *matCellDef="let submission; let i = index"> {{ i+1 }} </td>
+		  	</ng-container>
+
+		  <!-- budgeting number Column -->
+		  <ng-container matColumnDef="budgeting_number">
+		    <th mat-header-cell *matHeaderCellDef> Budgeting Number </th>
+		    <td mat-cell *matCellDef="let submission"> <a (click)='goTo(submission.stat, submission.id, submission.submission_id)'>{{submission.budgeting_number}}</a> </td>
+		  </ng-container>
+
+		  <!-- subject Column -->
+		  <ng-container matColumnDef="submission_date">
+		    <th mat-header-cell *matHeaderCellDef> Submission Date </th>
+		    <td mat-cell *matCellDef="let submission"> {{submission.submission_date | date:'longDate'}} </td>
+		  </ng-container>
+
+	  	  <!-- staff Column -->
+		  <ng-container matColumnDef="staff">
+		    <th mat-header-cell *matHeaderCellDef> Staff </th>
+		    <td mat-cell *matCellDef="let submission"> {{submission.createuser}} </td>
+		  </ng-container>
+	  	
+		  <!-- Item Name Column -->
+		  <ng-container matColumnDef="itemname">
+			<th mat-header-cell  *matHeaderCellDef> Item Name </th>
+			<td mat-cell *matCellDef="let submission"> {{submission.itemname}} </td>
+		  </ng-container>
+
+		  <!-- Part Number Column -->
+		  <ng-container matColumnDef="amount">
+			<th mat-header-cell  *matHeaderCellDef> Amount </th>
+			<td mat-cell *matCellDef="let submission"> {{submission.amount}} </td>
+		  </ng-container>
+
+		  <!-- Brand Column -->
+		  <ng-container matColumnDef="placement_location">
+		    <th mat-header-cell  *matHeaderCellDef> Placement Location </th>
+		    <td mat-cell *matCellDef="let submission"> {{submission.placement_location}} </td>
+		  </ng-container>
+
+		  <!-- Total Price Column -->
+		  <ng-container matColumnDef="totalprice">
+		    <th mat-header-cell *matHeaderCellDef> Proposed Total Price </th>
+		    <td mat-cell *matCellDef="let submission"> {{submission.proposed_totalprice | currency:'IDR':'symbol-narrow'}} </td>
+		  </ng-container>
+
+		  <!-- Brand Column -->
+		  <ng-container matColumnDef="stat">
+		    <th mat-header-cell  *matHeaderCellDef> Status </th>
+		    <td mat-cell *matCellDef="let submission"> {{submission.stat}} </td>
+		  </ng-container>
+
+		    <!-- Actions Column -->
+			<ng-container matColumnDef="action" class="print-hidden">
+				<th mat-header-cell *matHeaderCellDef> Action </th>
+			    <td mat-cell *matCellDef="let submission">
+			    	<mat-select placeholder="Select an action">
+						<mat-option *ngIf="submission_owner(submission.user_id)" (click)="editSubmission(submission.id)">Edit</mat-option>
+						<mat-option *ngIf="approver()" (click)="approve(submission.submission_id)">Approval</mat-option>
+						<mat-option *ngIf="verifier()" (click)="showPO(submission.submission_id)">View PO</mat-option>
+						<mat-option *ngIf="verifier()" (click)="editVerification(submission.submission_id)">Edit Verification Description</mat-option>
+						<mat-option *ngIf="verifiedrejectable(submission)" (click)="rejectByVerifier(submission)">Reject</mat-option>
+			    		<mat-option [value]="View" (click)='detail(submission.stat, submission.id, submission.submission_id)'>
+							View Detail
+						</mat-option>
+						<mat-option (click)="reSendSubmissionMail(submission.submission_id)" class="{{getMenuClass(submission.stat)}}">Resend submission</mat-option>
+						<mat-option *ngIf="submission_owner(submission.user_id)" (click)="removeSubmission(submission)">Hapus</mat-option>
+					</mat-select>
+			    </td>
+			</ng-container>
+
+		  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+		  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+		  <mat-paginator [hidden]="true" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+		</table>
+		<div class="print-hidden" [hidden]="true">	
+			<mat-paginator  [hidden]="true" [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" (page) = "changePage($event)" >
+			</mat-paginator>
+		</div>	
+	</div>
+</div>

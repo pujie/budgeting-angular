@@ -1,0 +1,23 @@
+<div class="title">
+    <h1>{{obj.username}}</h1>
+</div>
+<div class="xxx">
+<mat-card class="profile-card">
+    <input  type="file" (change)="uploadFile($event)" id="uplComponent" style="display:none" >
+    <button mat-menu-item (click)="showInputDialog()">Upload Picture</button >
+    <button mat-menu-item (click)="updateProfile()">Update Picture</button >
+    <img mat-card-image src="" alt="img" id="profileImage" width="60px" >
+    <mat-card-content>
+        <h3>Email: <span>
+            <input type="text" [(ngModel)]="obj.email">
+        </span></h3>
+    </mat-card-content>
+    <mat-card-content>
+        <h3>Level: <span>
+            <input type="text" [(ngModel)]="obj.level">
+        </span></h3>
+    </mat-card-content>
+</mat-card>
+<br>
+<button mat-stroked-button class="fontsize" (click)="changePassword()">Change Password</button>
+</div>            

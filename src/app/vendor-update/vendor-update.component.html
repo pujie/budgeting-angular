@@ -1,0 +1,48 @@
+<div class="title">
+	<h1>Update Vendor</h1>
+</div>
+
+<!-- Form -->	
+	<!-- Input nama vendor -->
+	<div class="container">
+		<mat-form-field>
+		<input type="text" matInput [(ngModel)]="vendor.name" name="nama"
+		class="full-width" placeholder="Name">
+		</mat-form-field>
+	</div>
+	
+	<!-- Input alamat vendor -->
+	<div  class="container">
+		<mat-form-field>
+		<input type="text" matInput [(ngModel)]="vendor.address" id="alamat"
+		class="full-width" placeholder="Address" >	
+		</mat-form-field>
+	</div>	
+
+	<!-- Input nomor telepon vendor -->
+	<div  class="container">
+		<mat-form-field>
+		<input type="text" matInput [(ngModel)]="vendor.phone" id="telp" maxlength='20'
+		class="full-width" placeholder="Phone Number" (keypress)="numCheck($event)" (keypress)="numCheck($event)">
+		</mat-form-field>
+	</div>
+
+
+	<!-- Input akun bank vendor -->
+	<div  class="container">
+		<mat-form-field>
+		<input type="text" matInput [(ngModel)]="vendor.bankaccount" id="bank"
+		class="full-width" placeholder="Bank Account">
+		</mat-form-field>
+	</div>
+
+	<!-- Action Buttons -->
+	<button mat-stroked-button id="kiri" (click)="updatevendor(vendor)">Update</button>
+	<button mat-stroked-button routerLink="/vendor-detail/{{ vendor.id }}">Back</button>
+
+	<!-- Id Vendor -->
+	<div class="container" id="hide">
+		<mat-form-field>
+		<input type="text" matInput [(ngModel)]="vendor.id" class="full-width" placeholder="Vendor id" >
+		</mat-form-field>
+	</div>

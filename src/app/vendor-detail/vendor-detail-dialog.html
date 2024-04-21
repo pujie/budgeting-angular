@@ -1,0 +1,87 @@
+<!-- delete vendor dialog template -->
+<div [hidden]="deleteVendor">
+	<h2 mat-dialog-title>Delete this vendor?</h2>
+	<mat-dialog-content>Are you sure?</mat-dialog-content>
+	<mat-dialog-actions>
+	  <button mat-button (click)="onNoClick()">No</button>
+	  <button mat-button color="warn" (click)="onYesClick(data)">Yes</button>
+	</mat-dialog-actions>
+</div>
+
+<!-- add new vendor pic template -->
+<div [hidden]='addPic'>
+	<!-- Input nama pic -->
+	<div class="container">
+		<mat-form-field>
+			<input type="text" matInput [(ngModel)]="pic.name" name="newPicName"
+			class="full-width" placeholder="PIC Name">
+		</mat-form-field>
+	</div>
+	<!-- Input nomor telepon Pic -->
+	<div  class="container">
+		<mat-form-field>
+			<input type="text" matInput [(ngModel)]="pic.phone" id="newPicPhone" maxlength='12'
+			class="full-width" placeholder="PIC Phone Number" (keypress)="numCheck($event)">
+		</mat-form-field>
+	</div>
+	<!-- Input email pic -->
+	<div class="container">
+		<mat-form-field>
+			<input type="email" matInput [(ngModel)]="pic.email" name="newPicEmail"
+			class="full-width" placeholder="PIC Email">
+		</mat-form-field>
+	</div>
+	<!-- Input role pic -->
+	<div class="container">
+		<mat-form-field>
+			<input type="text" matInput [(ngModel)]="pic.role" name="newPicRole"
+			class="full-width" placeholder="PIC Position (ex. employee)">
+		</mat-form-field>
+	</div>
+	<button mat-button class='kiri' (click)="addNewPIc()">Save</button>
+	<button mat-button color="warn" (click)="cancel()">Cancel</button>
+</div>
+
+<!-- update selected vendor pic template -->
+<div [hidden]='editPic' >
+	<!-- Input nama pic -->
+	<div class="container">
+		<mat-form-field>
+			<input type="text" matInput [(ngModel)]="oldPic.name" name="oldPicName"
+			class="full-width" placeholder="PIC Name">
+		</mat-form-field>
+	</div>
+	<!-- Input nomor telepon Pic -->
+	<div  class="container">
+		<mat-form-field>
+			<input type="text" matInput [(ngModel)]="oldPic.phone" id="oldPicPhone" maxlength='12'
+			class="full-width" placeholder="PIC Phone Number" (keypress)="numCheck($event)">
+		</mat-form-field>
+	</div>
+	<!-- Input email pic -->
+	<div class="container">
+		<mat-form-field>
+			<input type="email" matInput [(ngModel)]="oldPic.email" name="oldPicEmail"
+			class="full-width" placeholder="PIC Email">
+		</mat-form-field>
+	</div>
+	<!-- Input role pic -->
+	<div class="container">
+		<mat-form-field>
+			<input type="text" matInput [(ngModel)]="oldPic.role" name="oldPicRole"
+			class="full-width" placeholder="PIC Position (ex. employee)">
+		</mat-form-field>
+	</div>
+	<button mat-button class='kiri' (click)="updateOldPic()">Update</button>
+	<button mat-button color="warn" (click)="cancel()">Cancel</button>
+</div>
+
+<!-- delete selected vendor pic template -->
+<div [hidden]='deletePic'>
+	<h2 mat-dialog-title>Delete this pic?</h2>
+	<mat-dialog-content>Are you sure?</mat-dialog-content>
+	<mat-dialog-actions>
+	  <button mat-button (click)="cancel()">No</button>
+	  <button mat-button color="warn" (click)="deleteVendorPic()">Yes</button>
+	</mat-dialog-actions>
+</div>
